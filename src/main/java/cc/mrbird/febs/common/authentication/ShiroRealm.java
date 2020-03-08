@@ -6,6 +6,7 @@ import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IMenuService;
 import cc.mrbird.febs.system.service.IRoleService;
 import cc.mrbird.febs.system.service.IUserService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -26,14 +27,26 @@ import java.util.stream.Collectors;
  * @author MrBird
  */
 @Component
+@RequiredArgsConstructor
 public class ShiroRealm extends AuthorizingRealm {
 
-    @Autowired
     private IUserService userService;
-    @Autowired
     private IRoleService roleService;
-    @Autowired
     private IMenuService menuService;
+
+    @Autowired
+    public void setMenuService(IMenuService menuService) {
+        this.menuService = menuService;
+    }
+
+    @Autowired
+    public void setUserService(IUserService userService) {
+        this.userService = userService;
+    }
+    @Autowired
+    public void setRoleService(IRoleService roleService) {
+        this.roleService = roleService;
+    }
 
     /**
      * 授权模块，获取用户角色和权限
@@ -76,12 +89,15 @@ public class ShiroRealm extends AuthorizingRealm {
         // 通过用户名到数据库查询用户信息
         User user = this.userService.findByName(userName);
 
-        if (user == null)
+        if (user == null) {
             throw new UnknownAccountException("账号未注册！");
-        if (!StringUtils.equals(password, user.getPassword()))
+        }
+        if (!StringUtils.equals(password, user.getPassword())) {
             throw new IncorrectCredentialsException("用户名或密码错误！");
-        if (User.STATUS_LOCK.equals(user.getStatus()))
+        }
+        if (User.STATUS_LOCK.equals(user.getStatus())) {
             throw new LockedAccountException("账号已被锁定,请联系管理员！");
+        }
         return new SimpleAuthenticationInfo(user, password, getName());
     }
 

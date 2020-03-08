@@ -5,6 +5,7 @@ import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.monitor.entity.ActiveUser;
 import cc.mrbird.febs.monitor.service.ISessionService;
 import cc.mrbird.febs.system.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -22,10 +23,10 @@ import java.util.List;
  * @author MrBird
  */
 @Service
+@RequiredArgsConstructor
 public class SessionServiceImpl implements ISessionService {
 
-    @Autowired
-    private SessionDAO sessionDAO;
+    private final SessionDAO sessionDAO;
 
     @Override
     public List<ActiveUser> list(String username) {

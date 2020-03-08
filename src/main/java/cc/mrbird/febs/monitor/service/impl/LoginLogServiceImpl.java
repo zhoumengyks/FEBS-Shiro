@@ -4,7 +4,7 @@ import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.common.utils.AddressUtil;
 import cc.mrbird.febs.common.utils.HttpContextUtil;
-import cc.mrbird.febs.common.utils.IPUtil;
+import cc.mrbird.febs.common.utils.IpUtil;
 import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.monitor.entity.LoginLog;
 import cc.mrbird.febs.monitor.mapper.LoginLogMapper;
@@ -29,7 +29,7 @@ import java.util.Map;
  * @author MrBird
  */
 @Service("loginLogService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> implements ILoginLogService {
 
     @Override
@@ -52,18 +52,18 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveLoginLog(LoginLog loginLog) {
         loginLog.setLoginTime(new Date());
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-        String ip = IPUtil.getIpAddr(request);
+        String ip = IpUtil.getIpAddr(request);
         loginLog.setIp(ip);
         loginLog.setLocation(AddressUtil.getCityInfo(ip));
         this.save(loginLog);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteLoginLogs(String[] ids) {
         List<String> list = Arrays.asList(ids);
         baseMapper.deleteBatchIds(list);

@@ -10,10 +10,10 @@ import cc.mrbird.febs.system.entity.Menu;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IMenuService;
 import com.wuwenze.poi.ExcelKit;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,17 +26,18 @@ import java.util.List;
  */
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("menu")
 public class MenuController extends BaseController {
 
-    @Autowired
-    private IMenuService menuService;
+    private final IMenuService menuService;
 
     @GetMapping("{username}")
     public FebsResponse getUserMenus(@NotBlank(message = "{required}") @PathVariable String username) throws FebsException {
         User currentUser = getCurrentUser();
-        if (!StringUtils.equalsIgnoreCase(username, currentUser.getUsername()))
+        if (!StringUtils.equalsIgnoreCase(username, currentUser.getUsername())) {
             throw new FebsException("您无权获取别人的菜单");
+        }
         MenuTree<Menu> userMenus = this.menuService.findUserMenus(username);
         return new FebsResponse().data(userMenus);
     }

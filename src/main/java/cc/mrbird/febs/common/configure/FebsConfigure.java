@@ -4,7 +4,7 @@ import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.properties.FebsProperties;
 import cc.mrbird.febs.common.properties.SwaggerProperties;
 import cc.mrbird.febs.common.xss.XssFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,10 +27,10 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Configuration
 @EnableSwagger2
+@RequiredArgsConstructor
 public class FebsConfigure {
 
-    @Autowired
-    private FebsProperties properties;
+    private final FebsProperties properties;
 
     @Bean(FebsConstant.ASYNC_POOL)
     public ThreadPoolTaskExecutor asyncThreadPoolTaskExecutor(){
@@ -57,7 +57,7 @@ public class FebsConfigure {
         filterRegistrationBean.setOrder(1);
         filterRegistrationBean.setEnabled(true);
         filterRegistrationBean.addUrlPatterns("/*");
-        Map<String, String> initParameters = new HashMap<>();
+        Map<String, String> initParameters = new HashMap<>(2);
         initParameters.put("excludes", "/favicon.ico,/img/*,/js/*,/css/*");
         initParameters.put("isIncludeRichText", "true");
         filterRegistrationBean.setInitParameters(initParameters);

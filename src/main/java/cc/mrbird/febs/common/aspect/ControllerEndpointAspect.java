@@ -4,12 +4,12 @@ import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.monitor.service.ILogService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,10 +22,10 @@ import java.lang.reflect.Method;
  */
 @Aspect
 @Component
-public class ControllerEndpointAspect extends AspectSupport {
+@RequiredArgsConstructor
+public class ControllerEndpointAspect extends BaseAspectSupport {
 
-    @Autowired
-    private ILogService logService;
+    private final ILogService logService;
 
     @Pointcut("@annotation(cc.mrbird.febs.common.annotation.ControllerEndpoint)")
     public void pointcut() {
