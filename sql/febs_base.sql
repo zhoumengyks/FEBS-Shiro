@@ -516,8 +516,8 @@ DROP TABLE IF EXISTS `t_user_role`;
 CREATE TABLE `t_user_role`  (
                                 `USER_ID` bigint(20) NOT NULL COMMENT '用户ID',
                                 `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID',
-                                KEY `t_role_menu_menu_id` (`MENU_ID`),
-                                KEY `t_role_menu_role_id` (`ROLE_ID`)
+                                KEY `t_user_role_user_id` (`USER_ID`),
+                                KEY `t_user_role_role_id` (`ROLE_ID`)
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
