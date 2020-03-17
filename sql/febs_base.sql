@@ -56,7 +56,7 @@ CREATE TABLE `t_eximport`  (
                                `FIELD2` int(11) NOT NULL COMMENT '字段2',
                                `FIELD3` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字段3',
                                `CREATE_TIME` datetime(0) NOT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Excel导入导出测试' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Excel导入导出测试' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_eximport
@@ -123,6 +123,7 @@ CREATE TABLE `t_job`  (
                           KEY `t_job_create_time` (`CREATE_TIME`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务表' ROW_FORMAT = Dynamic;
 
+
 -- ----------------------------
 -- Records of t_job
 -- ----------------------------
@@ -147,7 +148,8 @@ CREATE TABLE `t_job_log`  (
                               `CREATE_TIME` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
                               PRIMARY KEY (`LOG_ID`) USING BTREE,
                               KEY `t_job_log_create_time` (`CREATE_TIME`)
-) ENGINE = InnoDB AUTO_INCREMENT = 2562 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '调度日志表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 2562 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '调度日志表' ROW_FORMAT = Dynamic;
+
 
 -- ----------------------------
 -- Table structure for t_log
@@ -165,7 +167,7 @@ CREATE TABLE `t_log`  (
                           `location` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作地点',
                           PRIMARY KEY (`ID`) USING BTREE,
                           KEY `t_log_create_time` (`CREATE_TIME`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1011 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 1011 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_login_log
@@ -181,7 +183,8 @@ CREATE TABLE `t_login_log`  (
                                 `BROWSER` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '浏览器',
                                 PRIMARY KEY (`ID`) USING BTREE,
                                 KEY `t_login_log_login_time` (`LOGIN_TIME`)
-) ENGINE = InnoDB AUTO_INCREMENT = 70 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 70 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志表' ROW_FORMAT = Dynamic;
+
 
 -- ----------------------------
 -- Table structure for t_menu
