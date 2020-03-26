@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.scheduling.annotation.Async;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 /**

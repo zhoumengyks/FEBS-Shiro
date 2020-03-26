@@ -63,6 +63,7 @@ public class FebsActuatorController {
                 febsHttpTraces.add(febsHttpTrace);
             }
         });
+
         Map<String, Object> data = new HashMap<>(2);
         data.put("rows", febsHttpTraces);
         data.put("total", febsHttpTraces.size());

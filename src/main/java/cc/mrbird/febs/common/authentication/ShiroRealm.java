@@ -6,7 +6,6 @@ import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IMenuService;
 import cc.mrbird.febs.system.service.IRoleService;
 import cc.mrbird.febs.system.service.IUserService;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -27,7 +26,6 @@ import java.util.stream.Collectors;
  * @author MrBird
  */
 @Component
-@RequiredArgsConstructor
 public class ShiroRealm extends AuthorizingRealm {
 
     private IUserService userService;
@@ -38,7 +36,6 @@ public class ShiroRealm extends AuthorizingRealm {
     public void setMenuService(IMenuService menuService) {
         this.menuService = menuService;
     }
-
     @Autowired
     public void setUserService(IUserService userService) {
         this.userService = userService;
@@ -83,16 +80,13 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         // 获取用户输入的用户名和密码
-        String userName = (String) token.getPrincipal();
+        String username = (String) token.getPrincipal();
         String password = new String((char[]) token.getCredentials());
 
         // 通过用户名到数据库查询用户信息
-        User user = this.userService.findByName(userName);
-
-        if (user == null) {
-            throw new UnknownAccountException("账号未注册！");
-        }
-        if (!StringUtils.equals(password, user.getPassword())) {
+        User user = this.userService.findByName(username);
+        
+        if (user == null || !StringUtils.equals(password, user.getPassword())) {
             throw new IncorrectCredentialsException("用户名或密码错误！");
         }
         if (User.STATUS_LOCK.equals(user.getStatus())) {

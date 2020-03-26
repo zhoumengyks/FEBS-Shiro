@@ -1,9 +1,11 @@
 package cc.mrbird.febs.job.service;
 
+import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
 import cc.mrbird.febs.job.entity.JobLog;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * @author MrBird
@@ -24,6 +26,7 @@ public interface IJobLogService extends IService<JobLog> {
      *
      * @param log 定时任务日志
      */
+    @Async(FebsConstant.ASYNC_POOL)
     void saveJobLog(JobLog log);
 
     /**

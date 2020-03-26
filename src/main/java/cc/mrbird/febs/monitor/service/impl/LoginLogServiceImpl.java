@@ -16,8 +16,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -29,7 +27,6 @@ import java.util.Map;
  * @author MrBird
  */
 @Service("loginLogService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> implements ILoginLogService {
 
     @Override
@@ -52,7 +49,6 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void saveLoginLog(LoginLog loginLog) {
         loginLog.setLoginTime(new Date());
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
@@ -63,7 +59,6 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void deleteLoginLogs(String[] ids) {
         List<String> list = Arrays.asList(ids);
         baseMapper.deleteBatchIds(list);

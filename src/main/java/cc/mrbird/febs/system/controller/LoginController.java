@@ -40,7 +40,7 @@ public class LoginController extends BaseController {
     private final ILoginLogService loginLogService;
 
     @PostMapping("login")
-    @Limit(key = "login", period = 60, count = 20, name = "登录接口", prefix = "limit")
+    @Limit(key = "login", period = 60, count = 10, name = "登录接口", prefix = "limit")
     public FebsResponse login(
             @NotBlank(message = "{required}") String username,
             @NotBlank(message = "{required}") String password,
@@ -95,6 +95,7 @@ public class LoginController extends BaseController {
     }
 
     @GetMapping("images/captcha")
+    @Limit(key = "get_captcha", period = 60, count = 10, name = "获取验证码", prefix = "limit")
     public void captcha(HttpServletRequest request, HttpServletResponse response) throws IOException, FebsException {
         validateCodeService.create(request, response);
     }

@@ -20,8 +20,6 @@ import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -33,7 +31,6 @@ import java.util.*;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements ILogService {
 
     private final ObjectMapper objectMapper;
@@ -64,7 +61,6 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void deleteLogs(String[] logIds) {
         List<String> list = Arrays.asList(logIds);
         baseMapper.deleteBatchIds(list);
