@@ -16,7 +16,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.stereotype.Service;
@@ -71,12 +70,10 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements
     }
 
     @Override
-    public void saveLog(ProceedingJoinPoint point, Method method, String ip, String operation, long start) {
+    public void saveLog(User user, ProceedingJoinPoint point, Method method, String ip, String operation, long start) {
         SystemLog systemLog = new SystemLog();
         // 设置 IP地址
         systemLog.setIp(ip);
-        // 设置操作用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
         if (user != null) {
             systemLog.setUsername(user.getUsername());
         }
