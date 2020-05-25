@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Laizp
+ * @author MrBird
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
