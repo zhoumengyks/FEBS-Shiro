@@ -108,7 +108,6 @@ public class User implements Serializable {
     @Size(max = 50, message = "{noMoreThan}")
     @Email(message = "{email}")
     @ExcelField(value = "邮箱")
-    @Desensitization(type = DesensitizationType.EMAIL)
     private String email;
 
     /**
