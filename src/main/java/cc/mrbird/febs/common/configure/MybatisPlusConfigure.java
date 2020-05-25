@@ -1,6 +1,7 @@
 package cc.mrbird.febs.common.configure;
 
 import cc.mrbird.febs.common.interceptor.DataPermissionInterceptor;
+import cc.mrbird.febs.common.interceptor.DesensitizationInterceptor;
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
 import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
@@ -20,9 +21,18 @@ public class MybatisPlusConfigure {
      * 注册数据权限
      */
     @Bean
-    @Order(-1)
+    @Order(0)
     public DataPermissionInterceptor dataPermissionInterceptor() {
         return new DataPermissionInterceptor();
+    }
+
+    /**
+     * 数据脱敏
+     */
+    @Bean
+    @Order(-1)
+    public DesensitizationInterceptor desensitizationInterceptor() {
+        return new DesensitizationInterceptor();
     }
 
     /**

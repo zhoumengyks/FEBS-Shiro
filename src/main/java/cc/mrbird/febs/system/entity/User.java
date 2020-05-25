@@ -1,7 +1,9 @@
 package cc.mrbird.febs.system.entity;
 
+import cc.mrbird.febs.common.annotation.Desensitization;
 import cc.mrbird.febs.common.annotation.IsMobile;
 import cc.mrbird.febs.common.converter.TimeConverter;
+import cc.mrbird.febs.common.entity.DesensitizationType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -106,6 +108,7 @@ public class User implements Serializable {
     @Size(max = 50, message = "{noMoreThan}")
     @Email(message = "{email}")
     @ExcelField(value = "邮箱")
+    @Desensitization(type = DesensitizationType.EMAIL)
     private String email;
 
     /**
@@ -114,6 +117,7 @@ public class User implements Serializable {
     @TableField("MOBILE")
     @IsMobile(message = "{mobile}")
     @ExcelField(value = "联系电话")
+    @Desensitization(type = DesensitizationType.PHONE)
     private String mobile;
 
     /**
