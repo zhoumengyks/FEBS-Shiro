@@ -177,13 +177,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.70</version>
-        </dependency>
-
         <!-- 验证码生成插件 -->
         <dependency>
             <groupId>com.github.whvcse</groupId>

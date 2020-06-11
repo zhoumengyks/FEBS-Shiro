@@ -10,6 +10,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author MrBird
@@ -119,5 +120,9 @@ public class GeneratorConfig {
      * 数据表对应的类名
      */
     private transient String className;
+
+    private transient boolean hasDate;
+    private transient boolean hasBigDecimal;
+    private transient List<Column> columns;
 
 }

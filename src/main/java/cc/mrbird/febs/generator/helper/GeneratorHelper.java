@@ -7,7 +7,6 @@ import cc.mrbird.febs.generator.entity.Column;
 import cc.mrbird.febs.generator.entity.FieldType;
 import cc.mrbird.febs.generator.entity.GeneratorConfig;
 import cc.mrbird.febs.generator.entity.GeneratorConstant;
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.io.Files;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -33,20 +32,17 @@ public class GeneratorHelper {
         String path = getFilePath(configure, configure.getEntityPackage(), suffix, false);
         String templateName = GeneratorConstant.ENTITY_TEMPLATE;
         File entityFile = new File(path);
-        JSONObject data = toJsonObject(configure);
-        data.put("hasDate", false);
-        data.put("hasBigDecimal", false);
         columns.forEach(c -> {
             c.setField(FebsUtil.underscoreToCamel(StringUtils.lowerCase(c.getName())));
             if (StringUtils.containsAny(c.getType(), FieldType.DATE, FieldType.DATETIME, FieldType.TIMESTAMP)) {
-                data.put("hasDate", true);
+                configure.setHasDate(true);
             }
             if (StringUtils.containsAny(c.getType(), FieldType.DECIMAL, FieldType.NUMERIC)) {
-                data.put("hasBigDecimal", true);
+                configure.setHasBigDecimal(true);
             }
         });
-        data.put("columns", columns);
-        this.generateFileByTemplate(templateName, entityFile, data);
+        configure.setColumns(columns);
+        this.generateFileByTemplate(templateName, entityFile, configure);
     }
 
     public void generateMapperFile(List<Column> columns, GeneratorConfig configure) throws Exception {
@@ -54,7 +50,7 @@ public class GeneratorHelper {
         String path = getFilePath(configure, configure.getMapperPackage(), suffix, false);
         String templateName = GeneratorConstant.MAPPER_TEMPLATE;
         File mapperFile = new File(path);
-        generateFileByTemplate(templateName, mapperFile, toJsonObject(configure));
+        generateFileByTemplate(templateName, mapperFile, configure);
     }
 
     public void generateServiceFile(List<Column> columns, GeneratorConfig configure) throws Exception {
@@ -62,7 +58,7 @@ public class GeneratorHelper {
         String path = getFilePath(configure, configure.getServicePackage(), suffix, true);
         String templateName = GeneratorConstant.SERVICE_TEMPLATE;
         File serviceFile = new File(path);
-        generateFileByTemplate(templateName, serviceFile, toJsonObject(configure));
+        generateFileByTemplate(templateName, serviceFile, configure);
     }
 
     public void generateServiceImplFile(List<Column> columns, GeneratorConfig configure) throws Exception {
@@ -70,7 +66,7 @@ public class GeneratorHelper {
         String path = getFilePath(configure, configure.getServiceImplPackage(), suffix, false);
         String templateName = GeneratorConstant.SERVICEIMPL_TEMPLATE;
         File serviceImplFile = new File(path);
-        generateFileByTemplate(templateName, serviceImplFile, toJsonObject(configure));
+        generateFileByTemplate(templateName, serviceImplFile, configure);
     }
 
     public void generateControllerFile(List<Column> columns, GeneratorConfig configure) throws Exception {
@@ -78,7 +74,7 @@ public class GeneratorHelper {
         String path = getFilePath(configure, configure.getControllerPackage(), suffix, false);
         String templateName = GeneratorConstant.CONTROLLER_TEMPLATE;
         File controllerFile = new File(path);
-        generateFileByTemplate(templateName, controllerFile, toJsonObject(configure));
+        generateFileByTemplate(templateName, controllerFile, configure);
     }
 
     public void generateMapperXmlFile(List<Column> columns, GeneratorConfig configure) throws Exception {
@@ -86,10 +82,9 @@ public class GeneratorHelper {
         String path = getFilePath(configure, configure.getMapperXmlPackage(), suffix, false);
         String templateName = GeneratorConstant.MAPPERXML_TEMPLATE;
         File mapperXmlFile = new File(path);
-        JSONObject data = toJsonObject(configure);
         columns.forEach(c -> c.setField(FebsUtil.underscoreToCamel(StringUtils.lowerCase(c.getName()))));
-        data.put("columns", columns);
-        generateFileByTemplate(templateName, mapperXmlFile, data);
+        configure.setColumns(columns);
+        generateFileByTemplate(templateName, mapperXmlFile, configure);
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -118,10 +113,6 @@ public class GeneratorHelper {
 
     private static String packageConvertPath(String packageName) {
         return String.format("/%s/", packageName.contains(".") ? packageName.replaceAll("\\.", "/") : packageName);
-    }
-
-    private JSONObject toJsonObject(Object o) {
-        return JSONObject.parseObject(JSONObject.toJSON(o).toString());
     }
 
     private Template getTemplate(String templateName) throws Exception {
