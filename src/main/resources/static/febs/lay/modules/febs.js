@@ -16,6 +16,7 @@ layui.extend({
     var windowWidth = $(window).width();
 
     conf.viewTabs = currentUser.isTab === '1';
+    self.defaultView = layui.router('#' + conf.entry);
     self.route = layui.router();
     self.view = view;
     self.api = layui.api;
@@ -41,6 +42,9 @@ layui.extend({
         layui.each(layui.conf.style, function (index, url) {
             layui.link(url + '?v=' + conf.v)
         });
+        if (self.route.href !== self.defaultView.href) {
+            self.initView(self.defaultView)
+        }
         self.initView(self.route)
         String.prototype.startsWith = function (str) {
             if (str == null || str === "" || this.length === 0 || str.length > this.length) {
