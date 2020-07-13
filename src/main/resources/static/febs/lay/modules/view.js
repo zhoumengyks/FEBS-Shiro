@@ -367,7 +367,6 @@ layui
                     if (!options) options = {}
                     var unshift = options.unshift | false
                     var focus = options.focus !== false
-                    console.log(options, unshift, focus)
                     if (typeof route == 'string') {
                         route = layui.router('#' + route);
                         route.fileurl = '/' + route.path.join('/')
