@@ -16,7 +16,6 @@ layui.extend({
     var windowWidth = $(window).width();
 
     conf.viewTabs = currentUser.isTab === '1';
-    self.defaultView = layui.router('#' + conf.entry);
     self.route = layui.router();
     self.view = view;
     self.api = layui.api;
@@ -42,10 +41,7 @@ layui.extend({
         layui.each(layui.conf.style, function (index, url) {
             layui.link(url + '?v=' + conf.v)
         });
-        self.initView(self.defaultView, {unshift: true, focus: false})
-        if (self.route.href !== self.defaultView.href) {
-            self.initView(self.route, {unshift: false, focus: true})
-        }
+        self.initView(self.route)
         String.prototype.startsWith = function (str) {
             if (str == null || str === "" || this.length === 0 || str.length > this.length) {
                 return false;
@@ -58,7 +54,7 @@ layui.extend({
     };
 
     //初始化视图区域
-    self.initView = function (route, options) {
+    self.initView = function (route) {
         if (!self.route.href || self.route.href === '/') {
             self.route = layui.router('#' + conf.entry);
             route = self.route
@@ -68,7 +64,7 @@ layui.extend({
         if ($.inArray(route.fileurl, conf.indPage) === -1) {
             var loadRenderPage = function (params) {
                 if (conf.viewTabs === true) {
-                    view.renderTabs(route, null, options)
+                    view.renderTabs(route)
                 } else {
                     view.render(route.fileurl)
                 }

@@ -363,10 +363,7 @@ layui
                     this.isInit = false;
                     $(document).off('click', this.wrap + ' .febs-tabs-btn')
                 },
-                change: function (route, callback, options) {
-                    if (!options) options = {}
-                    var unshift = options.unshift | false
-                    var focus = options.focus !== false
+                change: function (route, callback) {
                     if (typeof route == 'string') {
                         route = layui.router('#' + route);
                         route.fileurl = '/' + route.path.join('/')
@@ -426,16 +423,13 @@ layui
                             );
                             var params = self.fillHtml(fileurl, htmlElem, 'prepend');
                             route.title = params.title;
-                            if (unshift) tab.data.unshift(route);
-                            else tab.data.push(route);
-
+                            tab.data.push(route);
                             layui.febs.render(tab.tabMenuTplId);
 
-                            if (focus) {
-                                var currentMenu = $(tab.menu + ' ' + lay);
-                                currentMenu.addClass(activeCls);
-                                changeView(lay);
-                            }
+                            var currentMenu = $(tab.menu + ' ' + lay);
+                            currentMenu.addClass(activeCls);
+
+                            changeView(lay);
 
                             if ($.isFunction(callback)) callback(params)
                         })
@@ -479,9 +473,9 @@ layui
                 })
             };
             //加载 tab
-            self.renderTabs = function (route, callback, options) {
+            self.renderTabs = function (route, callback) {
                 var tab = self.tab;
-                tab.change(route, callback, options)
+                tab.change(route, callback)
             };
             //加载layout文件
             self.renderLayout = function (callback, url) {
