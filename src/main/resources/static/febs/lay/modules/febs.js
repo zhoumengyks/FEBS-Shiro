@@ -42,6 +42,9 @@ layui.extend({
         layui.each(layui.conf.style, function (index, url) {
             layui.link(url + '?v=' + conf.v)
         });
+        if (!self.route.href || self.route.href === '/') {
+            self.route = self.defaultView
+        }
         if (self.route.href !== self.defaultView.href) {
             self.initView(self.defaultView, {unshift: true, focus: false})
         }
