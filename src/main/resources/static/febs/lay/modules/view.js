@@ -442,11 +442,17 @@ layui
             };
 
             self.fillHtml = function (url, htmlElem, modeName) {
-                var fluid = htmlElem.find('.layui-fluid[lay-title]');
                 var title = '';
-                if (fluid.length > 0) {
-                    title = fluid.attr('lay-title');
-                    // self.setTitle(title)
+                var viewSelector = $('[lay-href="' + url + '"]')
+                if (viewSelector.length > 0) {
+                    title = viewSelector[0].innerText
+                }
+                if (!title) {
+                    var fluid = htmlElem.find('.layui-fluid[lay-title]');
+                    if (fluid.length > 0) {
+                        title = fluid.attr('lay-title');
+                        // self.setTitle(title)
+                    }
                 }
 
                 var container = self.containerBody || self.container;
