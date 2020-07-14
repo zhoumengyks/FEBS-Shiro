@@ -328,6 +328,10 @@ layui
                         })
                 },
                 del: function (url, backgroundDel) {
+                    if (url === layui.febs.defaultView.href) {
+                        layui.febs.alert.warn(layui.febs.defaultView.title + '无法删除！')
+                        return;
+                    }
                     var tab = this;
                     if (tab.data.length <= 1 && backgroundDel === undefined) return;
                     layui.each(tab.data, function (i, data) {
@@ -363,7 +367,10 @@ layui
                     this.isInit = false;
                     $(document).off('click', this.wrap + ' .febs-tabs-btn')
                 },
-                change: function (route, callback) {
+                change: function (route, callback, options) {
+                    if (!options) options = {}
+                    var unshift = options.unshift | false
+                    var focus = options.focus !== false
                     if (typeof route == 'string') {
                         route = layui.router('#' + route);
                         route.fileurl = '/' + route.path.join('/')
@@ -426,9 +433,13 @@ layui
                             tab.data.push(route);
                             layui.febs.render(tab.tabMenuTplId);
 
+                            if (!focus) {
+                                if (tab.data.length > 1) {
+                                    lay = '[lay-url="' + tab.data[1].fileurl + '"]';
+                                }
+                            }
                             var currentMenu = $(tab.menu + ' ' + lay);
                             currentMenu.addClass(activeCls);
-
                             changeView(lay);
 
                             if ($.isFunction(callback)) callback(params)
