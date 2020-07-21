@@ -550,6 +550,13 @@ layui.extend({
                     "count": res.data.total,
                     "data": res.data.rows
                 }
+            },
+            done: function(res, curr, count){
+                var noneDiv = $(".layui-table-body").find(".layui-none").first();
+                if (noneDiv.length === 1) {
+                    var table = $(".layui-table").first();
+                    noneDiv.width(table.width())
+                }
             }
         };
         return layuiTable.render(
