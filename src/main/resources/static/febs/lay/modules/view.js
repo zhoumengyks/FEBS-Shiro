@@ -430,7 +430,9 @@ layui
                             );
                             var params = self.fillHtml(fileurl, htmlElem, 'prepend');
                             route.title = params.title;
-                            tab.data.push(route);
+                            if (unshift) tab.data.unshift(route);
+                            else tab.data.push(route);
+
                             layui.febs.render(tab.tabMenuTplId);
 
                             if (!focus) {
@@ -484,9 +486,9 @@ layui
                 })
             };
             //加载 tab
-            self.renderTabs = function (route, callback) {
+            self.renderTabs = function (route, callback, options) {
                 var tab = self.tab;
-                tab.change(route, callback)
+                tab.change(route, callback, options)
             };
             //加载layout文件
             self.renderLayout = function (callback, url) {
