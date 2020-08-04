@@ -45,8 +45,10 @@ layui.extend({
         if (!self.route.href || self.route.href === '/') {
             self.route = self.defaultView
         }
-        if (self.route.href !== self.defaultView.href) {
-            self.initView(self.defaultView, {unshift: true, focus: false})
+        if (conf.viewTabs) {
+            if (self.route.href !== self.defaultView.href) {
+                self.initView(self.defaultView, {unshift: true, focus: false})
+            }
         }
         self.initView(self.route)
         String.prototype.startsWith = function (str) {
