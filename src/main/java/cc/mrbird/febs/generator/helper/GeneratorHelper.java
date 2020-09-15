@@ -7,6 +7,7 @@ import cc.mrbird.febs.generator.entity.Column;
 import cc.mrbird.febs.generator.entity.FieldType;
 import cc.mrbird.febs.generator.entity.GeneratorConfig;
 import cc.mrbird.febs.generator.entity.GeneratorConstant;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.google.common.io.Files;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -103,7 +104,7 @@ public class GeneratorHelper {
 
     private static String getFilePath(GeneratorConfig configure, String packagePath, String suffix, boolean serviceInterface) {
         String filePath = GeneratorConstant.TEMP_PATH + configure.getJavaPath() +
-                packageConvertPath(configure.getBasePackage() + "." + packagePath);
+                packageConvertPath(configure.getBasePackage() + StringPool.DOT + packagePath);
         if (serviceInterface) {
             filePath += "I";
         }
@@ -112,8 +113,7 @@ public class GeneratorHelper {
     }
 
     private static String packageConvertPath(String packageName) {
-        return String.format("%s%s%s", File.separator,
-                packageName.contains(".") ? packageName.replaceAll("\\.", File.separator) : packageName, File.separator);
+        return File.separator + StringUtils.replace(packageName, StringPool.DOT, File.separator) + File.separator;
     }
 
     private Template getTemplate(String templateName) throws Exception {
