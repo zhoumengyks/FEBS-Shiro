@@ -20,6 +20,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 /**
  * @author MrBird
@@ -113,7 +114,7 @@ public class GeneratorHelper {
     }
 
     private static String packageConvertPath(String packageName) {
-        return File.separator + StringUtils.replace(packageName, StringPool.DOT, File.separator) + File.separator;
+        return File.separator + packageName.replaceAll("\\.", Matcher.quoteReplacement(File.separator)) + File.separator;
     }
 
     private Template getTemplate(String templateName) throws Exception {
