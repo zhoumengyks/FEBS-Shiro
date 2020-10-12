@@ -557,7 +557,10 @@ layui.extend({
                 var noneDiv = $(".layui-table-body").find(".layui-none").first();
                 if (noneDiv.length === 1) {
                     var table = $(".layui-table").first();
-                    noneDiv.width(table.width())
+                    var tableWidth = table.width();
+                    if (tableWidth !== 0) {
+                        noneDiv.width(table.width());
+                    }
                 }
             }
         };
