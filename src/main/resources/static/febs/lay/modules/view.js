@@ -11,6 +11,7 @@ layui
             var laytpl = layui.laytpl;
             var conf = layui.conf;
             conf.viewTabs = currentUser.isTab === '1';
+            var $window = $(window);
             var loadBar = layui.loadBar;
             var self = {
                 ie8:
@@ -448,6 +449,7 @@ layui
                         })
                     }
                     layui.febs.sidebarFocus(route.href);
+                    $window.resize();
                     return false
                 },
                 onChange: function () {
