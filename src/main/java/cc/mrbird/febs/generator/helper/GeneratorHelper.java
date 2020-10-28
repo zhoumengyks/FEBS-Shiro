@@ -7,7 +7,6 @@ import cc.mrbird.febs.generator.entity.Column;
 import cc.mrbird.febs.generator.entity.FieldType;
 import cc.mrbird.febs.generator.entity.GeneratorConfig;
 import cc.mrbird.febs.generator.entity.GeneratorConstant;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.google.common.io.Files;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -20,7 +19,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
 
 /**
  * @author MrBird
@@ -105,7 +103,7 @@ public class GeneratorHelper {
 
     private static String getFilePath(GeneratorConfig configure, String packagePath, String suffix, boolean serviceInterface) {
         String filePath = GeneratorConstant.TEMP_PATH + configure.getJavaPath() +
-                packageConvertPath(configure.getBasePackage() + StringPool.DOT + packagePath);
+                packageConvertPath(configure.getBasePackage() + "." + packagePath);
         if (serviceInterface) {
             filePath += "I";
         }
@@ -114,18 +112,17 @@ public class GeneratorHelper {
     }
 
     private static String packageConvertPath(String packageName) {
-        return File.separator + packageName.replaceAll("\\.", Matcher.quoteReplacement(File.separator)) + File.separator;
+        return String.format("/%s/", packageName.contains(".") ? packageName.replaceAll("\\.", "/") : packageName);
     }
 
     private Template getTemplate(String templateName) throws Exception {
-        final String templatePathPrefix = File.separator + "generator" + File.separator + "templates" + File.separator;
         Configuration configuration = new freemarker.template.Configuration(Configuration.VERSION_2_3_23);
-        String templatePath = GeneratorHelper.class.getResource(templatePathPrefix).getPath();
+        String templatePath = GeneratorHelper.class.getResource("/generator/templates/").getPath();
         File file = new File(templatePath);
         if (!file.exists()) {
             templatePath = System.getProperties().getProperty("java.io.tmpdir");
-            file = new File(templatePath + File.separator + templateName);
-            FileUtils.copyInputStreamToFile(Objects.requireNonNull(AddressUtil.class.getClassLoader().getResourceAsStream("classpath:generator" + File.separator + "templates" + File.separator + templateName)), file);
+            file = new File(templatePath + "/" + templateName);
+            FileUtils.copyInputStreamToFile(Objects.requireNonNull(AddressUtil.class.getClassLoader().getResourceAsStream("classpath:generator/templates/" + templateName)), file);
         }
         configuration.setDirectoryForTemplateLoading(new File(templatePath));
         configuration.setDefaultEncoding("UTF-8");
