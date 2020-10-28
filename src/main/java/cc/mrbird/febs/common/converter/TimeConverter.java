@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParseException;
 
 /**
- * Execl导出时间类型字段格式化
+ * Excel导出时间类型字段格式化
  *
  * @author MrBird
  */
