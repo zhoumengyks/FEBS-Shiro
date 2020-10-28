@@ -50,4 +50,4 @@ spring:
 
 logging:
   level:
-    cc.mrbird.febs: debug
+    cc.mrbird.febs.common.handler: debug
