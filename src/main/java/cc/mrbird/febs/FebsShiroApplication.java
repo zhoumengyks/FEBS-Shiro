@@ -1,17 +1,13 @@
 package cc.mrbird.febs;
 
+import cc.mrbird.febs.common.annotation.FEBS权限系统;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author MrBird
  */
-@EnableAsync
-@SpringBootApplication
-@EnableTransactionManagement
+@FEBS权限系统
 public class FebsShiroApplication {
 
     public static void main(String[] args) {
