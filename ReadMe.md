@@ -172,8 +172,3 @@ FEBS-Cloud | 基于Spring Cloud的微服务权限系统 | [https://github.com/wu
 <a href="https://www.jetbrains.com/?from=FEBS Shiro">
     <img src="screenshot/jetbrains.png" width="100px"></a>
 
-### 支持作者
-如果该系统对您有帮助的话，请作者喝杯肥宅水吧🍺~
-
-![treatme](screenshot/treatme.jpg)
-
