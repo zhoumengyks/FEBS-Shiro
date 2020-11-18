@@ -140,6 +140,7 @@
                 var checkStatus = table.checkStatus('roleTable');
                 if (name === 'add') {
                     resetRoleForm();
+                    febs.alert.info("请在表单中填写相关信息");
                 }
                 if (name === 'delete') {
                     if (!checkStatus.data.length) {

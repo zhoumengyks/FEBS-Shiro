@@ -126,6 +126,7 @@
                     form.val("dept-form", {
                         "parentId": selected[0] ? selected[0].id : ''
                     });
+                    febs.alert.info("请在表单中填写相关信息");
                 }
                 if (name === 'delete') {
                     var checked = _deptTree.getChecked(false, true);
