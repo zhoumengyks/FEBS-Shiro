@@ -63,14 +63,14 @@
                                 </div>
                             </div>
                             <div class="layui-form-item febs-tr">
-                                <a id="regist-href">注册账号</a>
+                                <a id="register-href">注册账号</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="layui-col-xs12 layui-col-lg4 layui-col-lg-offset4 febs-hide" id="regist-div">
-                    <div class="layui-form" lay-filter="regist-form">
+                <div class="layui-col-xs12 layui-col-lg4 layui-col-lg-offset4 febs-hide" id="register-div">
+                    <div class="layui-form" lay-filter="register-form">
                         <div class="layui-anim layui-anim-upbit">
                             <ul class="login-type-tab">
                                 <li class="active">账号注册</li>
@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit
-                                            lay-filter="regist-submit" id="regist">
+                                            lay-filter="register-submit" id="register">
                                         <i style="display: none"
                                            class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i>
                                         立即注册
@@ -122,7 +122,7 @@
             $view = $('#febs-login'),
             type = 'login',
             $loginDiv = $view.find('#login-div'),
-            $registDiv = $view.find('#regist-div');
+            $registerDiv = $view.find('#register-div');
 
         form.verify(validate);
         form.render();
@@ -146,7 +146,7 @@
         });
 
         //提交注册表单
-        form.on('submit(regist-submit)', function (data) {
+        form.on('submit(register-submit)', function (data) {
             if (data.field.password !== data.field.passwordB) {
                 layer.msg('两次密码输入不一致！');
                 return;
@@ -154,7 +154,7 @@
             var loading = $(this).find('.layui-icon');
             if (loading.is(":visible")) return;
             loading.show();
-            $.post(ctx + 'regist', data.field, function (r) {
+            $.post(ctx + 'register', data.field, function (r) {
                 if (r.code === 200) {
                     layer.msg('注册成功，请登录');
                     loading.hide();
@@ -175,22 +175,22 @@
             initCode();
         });
 
-        $view.find('#regist-href').on('click', function () {
+        $view.find('#register-href').on('click', function () {
             resetForm();
-            type = 'regist';
+            type = 'register';
             $loginDiv.hide();
-            $registDiv.show();
+            $registerDiv.show();
         });
 
         $view.find('#login-href').on('click', function () {
             resetForm();
             type = 'login';
             $loginDiv.show();
-            $registDiv.hide();
+            $registerDiv.hide();
         });
 
         function resetForm() {
-            $registDiv.find('input[name="username"]').val('')
+            $registerDiv.find('input[name="username"]').val('')
                 .end().find('input[name="password"]').val('')
                 .end().find('input[name="passwordB"]').val('');
 
@@ -203,8 +203,8 @@
             if (e.keyCode === 13) {
                 if (type === 'login')
                     $view.find('#login').trigger("click");
-                if (type === 'regist')
-                    $view.find('#regist').trigger("click");
+                if (type === 'register')
+                    $view.find('#register').trigger("click");
             }
         });
     });

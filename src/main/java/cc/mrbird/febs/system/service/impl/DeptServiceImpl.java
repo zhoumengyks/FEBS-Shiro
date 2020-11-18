@@ -35,14 +35,14 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
     private final IUserDataPermissionService userDataPermissionService;
 
     @Override
-    public List<DeptTree<Dept>> findDepts() {
-        List<Dept> depts = this.baseMapper.selectList(new QueryWrapper<>());
-        List<DeptTree<Dept>> trees = this.convertDepts(depts);
+    public List<DeptTree<Dept>> findDept() {
+        List<Dept> deptList = this.baseMapper.selectList(new QueryWrapper<>());
+        List<DeptTree<Dept>> trees = this.convertDept(deptList);
         return TreeUtil.buildDeptTree(trees);
     }
 
     @Override
-    public List<DeptTree<Dept>> findDepts(Dept dept) {
+    public List<DeptTree<Dept>> findDept(Dept dept) {
         QueryWrapper<Dept> queryWrapper = new QueryWrapper<>();
 
         if (StringUtils.isNotBlank(dept.getDeptName())) {
@@ -50,13 +50,13 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
         }
         queryWrapper.lambda().orderByAsc(Dept::getOrderNum);
 
-        List<Dept> depts = this.baseMapper.selectList(queryWrapper);
-        List<DeptTree<Dept>> trees = this.convertDepts(depts);
+        List<Dept> deptList = this.baseMapper.selectList(queryWrapper);
+        List<DeptTree<Dept>> trees = this.convertDept(deptList);
         return TreeUtil.buildDeptTree(trees);
     }
 
     @Override
-    public List<Dept> findDepts(Dept dept, QueryRequest request) {
+    public List<Dept> findDept(Dept dept, QueryRequest request) {
         QueryWrapper<Dept> queryWrapper = new QueryWrapper<>();
 
         if (StringUtils.isNotBlank(dept.getDeptName())) {
@@ -86,13 +86,13 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteDepts(String[] deptIds) {
+    public void deleteDept(String[] deptIds) {
         this.delete(Arrays.asList(deptIds));
     }
 
-    private List<DeptTree<Dept>> convertDepts(List<Dept> depts) {
+    private List<DeptTree<Dept>> convertDept(List<Dept> Dept) {
         List<DeptTree<Dept>> trees = new ArrayList<>();
-        depts.forEach(dept -> {
+        Dept.forEach(dept -> {
             DeptTree<Dept> tree = new DeptTree<>();
             tree.setId(String.valueOf(dept.getDeptId()));
             tree.setParentId(String.valueOf(dept.getParentId()));
@@ -109,10 +109,10 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
 
         LambdaQueryWrapper<Dept> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(Dept::getParentId, deptIds);
-        List<Dept> depts = baseMapper.selectList(queryWrapper);
-        if (CollectionUtils.isNotEmpty(depts)) {
+        List<Dept> Dept = baseMapper.selectList(queryWrapper);
+        if (CollectionUtils.isNotEmpty(Dept)) {
             List<String> deptIdList = new ArrayList<>();
-            depts.forEach(d -> deptIdList.add(String.valueOf(d.getDeptId())));
+            Dept.forEach(d -> deptIdList.add(String.valueOf(d.getDeptId())));
             this.delete(deptIdList);
         }
     }
