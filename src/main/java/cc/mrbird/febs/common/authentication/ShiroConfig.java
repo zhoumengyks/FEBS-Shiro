@@ -3,6 +3,7 @@ package cc.mrbird.febs.common.authentication;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import cc.mrbird.febs.common.properties.FebsProperties;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
@@ -122,7 +123,7 @@ public class ShiroConfig {
     private SimpleCookie rememberMeCookie() {
         // 设置 cookie 名称，对应 login.html 页面的 <input type="checkbox" name="rememberMe"/>
         SimpleCookie cookie = new SimpleCookie("rememberMe");
-        // 设置 cookie 的过期时间，单位为秒，这里为一天
+        // 设置 cookie 的过期时间，单位为秒
         cookie.setMaxAge(febsProperties.getShiro().getCookieTimeout());
         return cookie;
     }
@@ -136,7 +137,7 @@ public class ShiroConfig {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
         cookieRememberMeManager.setCookie(rememberMeCookie());
         // rememberMe cookie 加密的密钥
-        String encryptKey = "febs_shiro_key";
+        String encryptKey = RandomStringUtils.randomAlphanumeric(15);
         byte[] encryptKeyBytes = encryptKey.getBytes(StandardCharsets.UTF_8);
         String rememberKey = Base64Utils.encodeToString(Arrays.copyOf(encryptKeyBytes, 16));
         cookieRememberMeManager.setCipherKey(Base64.decode(rememberKey));

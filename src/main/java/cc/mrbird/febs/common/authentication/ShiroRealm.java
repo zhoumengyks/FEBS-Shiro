@@ -15,6 +15,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -34,18 +35,22 @@ public class ShiroRealm extends AuthorizingRealm {
     private IMenuService menuService;
     private IUserDataPermissionService userDataPermissionService;
 
+    @Lazy
     @Autowired
     public void setMenuService(IMenuService menuService) {
         this.menuService = menuService;
     }
+    @Lazy
     @Autowired
     public void setUserService(IUserService userService) {
         this.userService = userService;
     }
+    @Lazy
     @Autowired
     public void setRoleService(IRoleService roleService) {
         this.roleService = roleService;
     }
+    @Lazy
     @Autowired
     public void setUserDataPermissionService(IUserDataPermissionService userDataPermissionService) {
         this.userDataPermissionService = userDataPermissionService;
