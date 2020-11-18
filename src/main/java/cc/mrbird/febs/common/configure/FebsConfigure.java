@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author MrBird
  */
 @Configuration
-@EnableSwagger2
+@EnableOpenApi
 @RequiredArgsConstructor
 public class FebsConfigure {
 
@@ -65,14 +65,14 @@ public class FebsConfigure {
     }
 
     @Bean
-    public Docket swaggerApi() {
+    public Docket docket() {
         SwaggerProperties swagger = properties.getSwagger();
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(apiInfo(swagger)).enable(true)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(swagger.getBasePackage()))
                 .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo(swagger));
+                .build();
     }
 
     private ApiInfo apiInfo(SwaggerProperties swagger) {
