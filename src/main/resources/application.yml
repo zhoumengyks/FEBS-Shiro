@@ -15,6 +15,9 @@ spring:
     proxy-target-class: true
   config:
     import: classpath:febs.yml
+  application:
+    name: febs-shiro
+    package-time: "@package-time@"
 
 mybatis-plus:
   type-aliases-package: cc.mrbird.febs.*.entity

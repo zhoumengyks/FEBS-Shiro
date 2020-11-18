@@ -35,6 +35,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <thymeleaf-extras-shiro.version>2.0.0</thymeleaf-extras-shiro.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <package-time>${maven.build.timestamp}</package-time>
     </properties>
 
     <dependencies>
