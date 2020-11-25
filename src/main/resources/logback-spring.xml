@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
-    <springProperty scope="context" name="applicationName" source="spring.application.name" defaultValue="febs"/>
+    <springProperty scope="context" name="applicationName" source="spring.application.name" defaultValue=""/>
     <contextName>${applicationName}</contextName>
     <property name="log.path" value="log" />
     <property name="log.maxHistory" value="15" />
