@@ -124,7 +124,7 @@ public class ShiroConfig {
         // 设置 cookie 名称，对应 login.html 页面的 <input type="checkbox" name="rememberMe"/>
         SimpleCookie cookie = new SimpleCookie("rememberMe");
         // 设置 cookie 的过期时间，单位为秒
-        cookie.setMaxAge(febsProperties.getShiro().getCookieTimeout());
+        cookie.setMaxAge((int) febsProperties.getShiro().getCookieTimeout().getSeconds());
         return cookie;
     }
 
@@ -179,7 +179,7 @@ public class ShiroConfig {
         Collection<SessionListener> listeners = new ArrayList<>();
         listeners.add(new ShiroSessionListener());
         // 设置 session超时时间
-        sessionManager.setGlobalSessionTimeout(febsProperties.getShiro().getSessionTimeout() * 1000L);
+        sessionManager.setGlobalSessionTimeout(febsProperties.getShiro().getSessionTimeout().toMillis());
         sessionManager.setSessionListeners(listeners);
         sessionManager.setSessionDAO(redisSessionDAO());
         sessionManager.setSessionIdUrlRewritingEnabled(false);
