@@ -18,6 +18,13 @@ spring:
   application:
     name: febs-shiro
     package-time: "@package-time@"
+  web:
+    resources:
+      chain:
+        strategy:
+          content:
+            enabled: true
+            paths: "/**"
 
 mybatis-plus:
   type-aliases-package: cc.mrbird.febs.*.entity
