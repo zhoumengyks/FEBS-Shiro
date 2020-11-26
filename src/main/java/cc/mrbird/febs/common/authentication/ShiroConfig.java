@@ -17,7 +17,7 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Base64Utils;
@@ -38,17 +38,7 @@ import java.util.LinkedHashMap;
 public class ShiroConfig {
 
     private final FebsProperties febsProperties;
-
-    @Value("${spring.redis.host}")
-    private String host;
-    @Value("${spring.redis.port}")
-    private int port;
-    @Value("${spring.redis.password:}")
-    private String password;
-    @Value("${spring.redis.timeout}")
-    private int timeout;
-    @Value("${spring.redis.database:0}")
-    private int database;
+    private final RedisProperties redisProperties;
 
     /**
      * shiro 中配置 redis 缓存
@@ -57,12 +47,12 @@ public class ShiroConfig {
      */
     private RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost(host + ":" + port);
-        if (StringUtils.isNotBlank(password)) {
-            redisManager.setPassword(password);
+        redisManager.setHost(redisProperties.getHost() + ":" + redisProperties.getPort());
+        if (StringUtils.isNotBlank(redisProperties.getPassword())) {
+            redisManager.setPassword(redisProperties.getPassword());
         }
-        redisManager.setTimeout(timeout);
-        redisManager.setDatabase(database);
+        redisManager.setTimeout(redisManager.getTimeout());
+        redisManager.setDatabase(redisProperties.getDatabase());
         return redisManager;
     }
 
@@ -75,7 +65,6 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-
         // 设置 securityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 登录的 url
@@ -84,19 +73,16 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSuccessUrl(febsProperties.getShiro().getSuccessUrl());
         // 未授权 url
         shiroFilterFactoryBean.setUnauthorizedUrl(febsProperties.getShiro().getUnauthorizedUrl());
-
-        LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 设置免认证 url
+        LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         String[] anonUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(febsProperties.getShiro().getAnonUrl(), ",");
         for (String url : anonUrls) {
             filterChainDefinitionMap.put(url, "anon");
         }
         // 配置退出过滤器，其中具体的退出代码 Shiro已经替我们实现了
         filterChainDefinitionMap.put(febsProperties.getShiro().getLogoutUrl(), "logout");
-
         // 除上以外所有 url都必须认证通过才可以访问，未通过认证自动访问 LoginUrl
         filterChainDefinitionMap.put("/**", "user");
-
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
