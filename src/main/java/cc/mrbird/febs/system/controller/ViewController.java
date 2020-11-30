@@ -1,6 +1,5 @@
 package cc.mrbird.febs.system.controller;
 
-import cc.mrbird.febs.common.authentication.ShiroHelper;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.utils.DateUtil;
@@ -9,7 +8,6 @@ import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserDataPermissionService;
 import cc.mrbird.febs.system.service.IUserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.springframework.stereotype.Controller;
@@ -30,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 public class ViewController extends BaseController {
 
     private final IUserService userService;
-    private final ShiroHelper shiroHelper;
     private final IUserDataPermissionService userDataPermissionService;
 
     @GetMapping("login")
@@ -58,13 +55,12 @@ public class ViewController extends BaseController {
 
     @GetMapping("index")
     public String index(Model model) {
-        AuthorizationInfo authorizationInfo = shiroHelper.getCurrentUserAuthorizationInfo();
-        User user = super.getCurrentUser();
-        User currentUserDetail = userService.findByName(user.getUsername());
-        currentUserDetail.setPassword("It's a secret");
-        model.addAttribute("user", currentUserDetail);
-        model.addAttribute("permissions", authorizationInfo.getStringPermissions());
-        model.addAttribute("roles", authorizationInfo.getRoles());
+        User principal = getCurrentUser();
+        userService.doGetUserAuthorizationInfo(principal);
+        principal.setPassword("It's a secret");
+        model.addAttribute("user", principal);
+        model.addAttribute("permissions", principal.getStringPermissions());
+        model.addAttribute("roles", principal.getRoles());
         return "index";
     }
 
