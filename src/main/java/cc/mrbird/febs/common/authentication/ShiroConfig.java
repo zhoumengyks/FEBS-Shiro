@@ -60,6 +60,8 @@ public class ShiroConfig {
     @Bean
     public RedisCacheManager cacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
+        // 权限缓存超时时间，和session超时时间一致
+        redisCacheManager.setExpire((int) febsProperties.getShiro().getSessionTimeout().getSeconds());
         redisCacheManager.setRedisManager(redisManager());
         return redisCacheManager;
     }

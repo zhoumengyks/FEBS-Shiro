@@ -30,6 +30,7 @@ public class UserAuthenticationUpdatedEventListener {
         if (CollectionUtils.isNotEmpty(userIds)) {
             Stopwatch stopwatch = Stopwatch.createStarted();
             userIds.forEach(realm::clearCache);
+            event.cleanSet(userIds);
             log.info("clean user [userId: {}] authentication cache,which took {}", userIds, stopwatch.stop());
         }
     }
