@@ -9,8 +9,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @SpringBootConfiguration(proxyBeanMethods = false)
-@ConfigurationProperties(prefix = "febs")
+@ConfigurationProperties(prefix = FebsProperties.PROPERTIES_PREFIX)
 public class FebsProperties {
+
+    public static final String PROPERTIES_PREFIX = "febs";
 
     private ShiroProperties shiro = new ShiroProperties();
     private boolean autoOpenBrowser = true;
