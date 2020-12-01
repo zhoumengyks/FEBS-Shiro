@@ -45,12 +45,12 @@ public interface FebsConstant {
     /**
      * 异步线程名称前缀
      */
-    String ASYNC_THREAD_NAME_PREFIX = "Febs-Async-Thread";
+    String ASYNC_THREAD_NAME_PREFIX = "febs-async-thread-";
 
     /**
      * 任务调度线程前缀
      */
-    String QUARTZ_THREAD_NAME_PREFIX= "Febs-Job-Thread";
+    String QUARTZ_THREAD_NAME_PREFIX= "febs-job-thread-";
 
     /**
      * 开发环境

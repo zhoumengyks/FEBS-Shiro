@@ -2,6 +2,7 @@ package cc.mrbird.febs.common.event;
 
 import cc.mrbird.febs.common.annotation.Publisher;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -16,6 +17,7 @@ import java.util.Set;
  *
  * @author MrBird
  */
+@Slf4j
 @Getter
 @Publisher
 public class UserAuthenticationUpdatedEventPublisher implements ApplicationEventPublisherAware, ApplicationContextAware {
@@ -42,6 +44,7 @@ public class UserAuthenticationUpdatedEventPublisher implements ApplicationEvent
         UserAuthenticationUpdatedEvent event = new UserAuthenticationUpdatedEvent(applicationContext);
         event.setUserIds(userId);
         applicationEventPublisher.publishEvent(event);
+        log.info("broadcast UserAuthenticationUpdatedEvent");
     }
 
 }
