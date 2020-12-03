@@ -112,12 +112,12 @@
 </div>
 <script th:src="@{layui/layui.js}"></script>
 <script th:inline="javascript">
-    var ctx = [[@{/}]];
+    let ctx = [[@{/}]];
 
     layui.extend({
         validate: './febs/lay/modules/validate'
     }).use(['form', 'layer', 'validate'], function (form, layer) {
-        var $ = layui.jquery,
+        let $ = layui.jquery,
             validate = layui.validate,
             $view = $('#febs-login'),
             type = 'login',
@@ -130,7 +130,7 @@
 
         //提交登录表单
         form.on('submit(login-submit)', function (data) {
-            var loading = $(this).find('.layui-icon');
+            let loading = $(this).find('.layui-icon');
             if (loading.is(":visible")) return;
             loading.show();
             $.post(ctx + 'login', data.field, function (r) {
@@ -151,7 +151,7 @@
                 layer.msg('两次密码输入不一致！');
                 return;
             }
-            var loading = $(this).find('.layui-icon');
+            let loading = $(this).find('.layui-icon');
             if (loading.is(":visible")) return;
             loading.show();
             $.post(ctx + 'register', data.field, function (r) {

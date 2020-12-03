@@ -1,3 +1,9 @@
+<style>
+    #febs-menu xm-select {
+        min-height: 30px;
+        line-height: 30px;
+    }
+</style>
 <div class="layui-fluid layui-anim febs-anim" id="febs-menu" lay-title="菜单管理">
     <div class="layui-row layui-col-space8 febs-container">
         <div class="layui-col-md6 layui-col-sm6 layui-col-xs12">
@@ -16,10 +22,12 @@
                                 </div>
                             </div>
                             <div class="layui-col-md4 layui-col-sm12 layui-col-xs12 table-action-area">
-                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain  table-action" id="query">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain  table-action"
+                                     id="query">
                                     <i class="layui-icon">&#xe848;</i>
                                 </div>
-                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain  table-action" id="reset">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain  table-action"
+                                     id="reset">
                                     <i class="layui-icon">&#xe79b;</i>
                                 </div>
                                 <div class="layui-btn layui-btn-sm layui-btn-primary table-action action-more"
@@ -45,9 +53,8 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">上级ID：</label>
-                            <div class="layui-input-block">
-                                <input type="text" value="" name="parentId" readonly class="layui-input">
+                            <label class="layui-form-label">上级菜单：</label>
+                            <div class="layui-input-block" id="parent-menu-id">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -105,13 +112,13 @@
     </div>
 </div>
 <script data-th-inline="none" type="text/javascript">
-    layui.use(['dropdown', 'jquery', 'laydate', 'febs', 'form', 'eleTree', 'validate'], function () {
-        var $ = layui.jquery,
-            laydate = layui.laydate,
+    layui.use(['dropdown', 'jquery', 'febs', 'form', 'eleTree', 'validate', 'xmSelect'], function () {
+        let $ = layui.jquery,
             febs = layui.febs,
             form = layui.form,
             validate = layui.validate,
             eleTree = layui.eleTree,
+            xmSelect = layui.xmSelect,
             dropdown = layui.dropdown,
             $view = $('#febs-menu'),
             $query = $view.find('#query'),
@@ -128,39 +135,57 @@
             $order_parent = $order.parents('.layui-form-item'),
             $header = $view.find('#form-header'),
             _currentMenuData,
-            _selectNode,
-            _menuTree,
-            tableIns;
+            menuXmlSelect,
+            _menuTree;
 
         form.verify(validate);
         form.render();
+
+        menuXmlSelect = xmSelect.render({
+            el: '#parent-menu-id',
+            model: {label: {type: 'text'}},
+            tree: {
+                show: true,
+                strict: false,
+                showLine: false,
+                clickCheck: true,
+                expandedKeys: [-1],
+            },
+            name: 'parentId',
+            theme: {
+                color: '#52c41a',
+            },
+            prop: {
+                value: 'id',
+                name: 'title',
+                children: 'childs'
+            },
+            height: 'auto',
+            on: function (data) {
+                if (data.isAdd) {
+                    return data.change.slice(0, 1)
+                }
+            }
+        });
+
+        febs.get(ctx + 'menu/tree', null, function (data) {
+            menuXmlSelect.update(data)
+        });
 
         dropdown.render({
             elem: $view.find('.action-more'),
             click: function (name, elem, event) {
                 if (name === 'add') {
                     reset();
-                    var selected = _menuTree.getChecked(false, true);
-                    if (selected.length > 1) {
-                        febs.alert.warn('只能选择一个节点作为父级！');
-                        return;
-                    }
-                    if (selected[0] && selected[0].type === '1') {
-                        febs.alert.warn('不能选择按钮作为父级！');
-                        return;
-                    }
-                    form.val("menu-form", {
-                        "parentId": selected[0] ? selected[0].id : ''
-                    });
                     febs.alert.info("请在表单中填写相关信息");
                 }
                 if (name === 'delete') {
-                    var checked = _menuTree.getChecked(false, true);
+                    let checked = _menuTree.getChecked(false, true);
                     if (checked.length < 1) {
                         febs.alert.warn('请勾选需要删除的菜单或按钮');
                         return;
                     }
-                    var menuIds = [];
+                    let menuIds = [];
                     layui.each(checked, function (key, item) {
                         menuIds.push(item.id)
                     });
@@ -196,10 +221,10 @@
         _menuTree = renderMenuTree();
 
         eleTree.on("nodeClick(menuTree)", function (d) {
-            var data = d.data.currentData.data;
+            let data = d.data.currentData.data;
             _currentMenuData = data;
             $type.attr("disabled", true);
-            var type = data.type;
+            let type = data.type;
             handleTypeChange(type);
             if (type === '0') { // 菜单
                 $header.text('修改菜单');
@@ -213,9 +238,13 @@
                 "type": data.type,
                 "menuName": data.menuName,
                 "perms": data.perms,
-                "parentId": data.parentId,
                 "menuId": data.menuId
             });
+            if (data.parentId) {
+                menuXmlSelect.setValue([data.parentId]);
+            } else {
+                menuXmlSelect.setValue([])
+            }
         });
 
         form.on("radio(menu-type)", function (data) {
@@ -241,7 +270,7 @@
             febs.modal.open('图标选择', 'others/febs/icon', {
                 btn: ['确定'],
                 yes: function () {
-                    var icon = $('#febs-icon').find('.icon-active .icon-name').text();
+                    let icon = $('#febs-icon').find('.icon-active .icon-name').text();
                     if (icon) {
                         form.val("menu-form", {
                             "icon": 'layui-icon-' + icon
@@ -295,7 +324,7 @@
             _menuTree = renderMenuTree();
         }
 
-        var handleTypeChange = function (type) {
+        let handleTypeChange = function (type) {
             form.val("menu-form", {
                 "icon": '',
                 "url": '',

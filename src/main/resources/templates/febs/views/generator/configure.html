@@ -101,14 +101,14 @@
 
 <script data-th-inline="javascript">
     layui.use(['febs', 'form'], function () {
-        var $ = layui.$,
+        let $ = layui.$,
             febs = layui.febs,
             form = layui.form,
             $view = $('#febs-generator-configure'),
             $trimValue = $view.find('input[name="trimValue"]'),
             $trimValueItem = $trimValue.parents('.layui-form-item');
 
-        var config = [[${config}]];
+        let config = [[${config}]];
 
         form.render();
         initFormValue();

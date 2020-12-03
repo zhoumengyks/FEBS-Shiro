@@ -76,11 +76,11 @@
                     {{#
                     function __createSlidebar(data,index){
                     if(!data || data.length == 0) return '';
-                    var html = '
+                    let html = '
                     <dl class="layui-nav-child">';
                         layui.each(data, function(i, child) {
-                        var left = index == 0 ? 50 : 50 + index * 20;
-                        var title = child.title;
+                        let left = index == 0 ? 50 : 50 + index * 20;
+                        let title = child.title;
                         if (child.icon) {
                             title = '<i class="layui-icon '+child.icon+'"></i>' + child.title
                         }
@@ -111,11 +111,11 @@
 </div>
 <script data-th-inline="javascript" type="text/javascript">
     layui.use(['jquery', 'febs', 'element'], function () {
-        var $ = layui.jquery,
+        let $ = layui.jquery,
             $view = $('#febs-layout'),
             febs = layui.febs;
 
-        var element = layui.element;
+        let element = layui.element;
 
         initTheme();
 
@@ -126,13 +126,13 @@
         });
 
         $view.on('click', '#fullscreen', function () {
-            var $this = $(this);
-            var normalCls = 'layui-icon-screen-full';
-            var activeCls = 'layui-icon-screen-restore';
-            var ico = $this.find('.layui-icon');
+            let $this = $(this);
+            let normalCls = 'layui-icon-screen-full';
+            let activeCls = 'layui-icon-screen-restore';
+            let ico = $this.find('.layui-icon');
 
             if (ico.hasClass(normalCls)) {
-                var a = document.body;
+                let a = document.body;
                 a.webkitRequestFullScreen
                     ? a.webkitRequestFullScreen()
                     : a.mozRequestFullScreen
@@ -140,7 +140,7 @@
                     : a.requestFullScreen && a.requestFullscreen();
                 ico.removeClass(normalCls).addClass(activeCls)
             } else {
-                var b = document;
+                let b = document;
                 b.webkitCancelFullScreen
                     ? b.webkitCancelFullScreen()
                     : b.mozCancelFullScreen
@@ -167,8 +167,8 @@
         });
 
         function initTheme() {
-            var theme = currentUser.theme;
-            var $sidebar = $('#app-sidebar');
+            let theme = currentUser.theme;
+            let $sidebar = $('#app-sidebar');
             if (theme === 'black') {
                 $sidebar.removeClass('febs-theme-white');
             }

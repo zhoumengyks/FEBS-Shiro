@@ -48,7 +48,7 @@
 </script>
 <script type="text/html" id="online-status">
     {{#
-    var status = {
+    let status = {
     1: {title: '在线', color: 'green'},
     0: {title: '离线', color: 'volcano'}
     }[d.status];
@@ -63,7 +63,7 @@
 </script>
 <script data-th-inline="none" type="text/javascript">
     layui.use(['jquery', 'form', 'table', 'febs'], function () {
-        var $ = layui.jquery,
+        let $ = layui.jquery,
             laydate = layui.laydate,
             febs = layui.febs,
             form = layui.form,
@@ -79,7 +79,7 @@
         initTable();
 
         table.on('tool(onlineTable)', function (obj) {
-            var data = obj.data,
+            let data = obj.data,
                 layEvent = obj.event;
             if (layEvent === 'del') {
                 febs.modal.confirm('踢出用户', '确定将该用户踢出？', function () {
@@ -129,7 +129,7 @@
         }
 
         function getQueryParams() {
-            var params = $searchForm.serializeJson();
+            let params = $searchForm.serializeJson();
             params.invalidate_ie_cache = new Date();
             return params;
         }

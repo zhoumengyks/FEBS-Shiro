@@ -28,7 +28,7 @@
 <script th:src="@{layui/layui.js}"></script>
 <script data-th-inline="javascript" type="text/javascript">
     layui.use(['jquery'], function () {
-        var $ = layui.jquery,
+        let $ = layui.jquery,
             ctx = [[@{/}]],
             $view = $('#febs-error-403');
         $view.on('click', 'button', function () {
