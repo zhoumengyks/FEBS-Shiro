@@ -93,17 +93,18 @@ FEBS-Cloud | 基于Spring Cloud的微服务权限系统 | [https://github.com/wu
 ### 技术选型
 
 #### 后端
-- [Spring Boot 2.2.1](http://spring.io/projects/spring-boot/)
+- [Spring Boot 2.4.0](http://spring.io/projects/spring-boot/)
 - [Mybatis-Plus](https://mp.baomidou.com/guide/)
-- [MySQL 5.7.x](https://dev.mysql.com/downloads/mysql/5.7.html#downloads),[Hikari](https://brettwooldridge.github.io/HikariCP/),[Redis](https://redis.io/)
-- [Shiro 1.4.2](http://shiro.apache.org/)
+- [MySQL 5.7.x](https://dev.mysql.com/downloads/mysql/5.7.html#downloads)
+- [Hikari](https://brettwooldridge.github.io/HikariCP/)
+- [Redis](https://redis.io/)
+- [Shiro 1.6.0](http://shiro.apache.org/)
 
 #### 前端
-- [Layui 2.5.5](https://www.layui.com/)
+- [Layui 2.5.6](https://www.layui.com/)
 - [Nepadmin](https://gitee.com/june000/nep-admin)
-- [formSelects 4.x 多选框](https://hnzzmsf.github.io/example/example_v4.html)
 - [eleTree 树组件](https://layuiextend.hsianglee.cn/eletree/)
-- [formSelect.js树形下拉](https://wujiawei0926.gitee.io/treeselect/docs/doc.html)
+- [xm-select](https://gitee.com/maplemei/xm-select)
 - [Apexcharts图表](https://apexcharts.com/)
 
 ### 系统截图

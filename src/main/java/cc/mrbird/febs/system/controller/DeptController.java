@@ -33,8 +33,9 @@ public class DeptController {
 
     @GetMapping("select/tree")
     @ControllerEndpoint(exceptionMessage = "获取部门树失败")
-    public List<DeptTree<Dept>> getDeptTree() throws FebsException {
-        return this.deptService.findDept();
+    public FebsResponse getDeptTree() throws FebsException {
+        List<DeptTree<Dept>> deptTrees = this.deptService.findDept();
+        return new FebsResponse().success().data(deptTrees);
     }
 
     @GetMapping("tree")
