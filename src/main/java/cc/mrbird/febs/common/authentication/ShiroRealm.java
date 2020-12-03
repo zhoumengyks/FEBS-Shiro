@@ -2,6 +2,7 @@ package cc.mrbird.febs.common.authentication;
 
 import cc.mrbird.febs.monitor.service.ISessionService;
 import cc.mrbird.febs.system.entity.User;
+import cc.mrbird.febs.system.service.IUserDataPermissionService;
 import cc.mrbird.febs.system.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class ShiroRealm extends AuthorizingRealm {
     private final CacheManager cacheManager;
     private final ISessionService sessionService;
     private final ShiroLogoutService shiroLogoutService;
+    private final IUserDataPermissionService userDataPermissionService;
 
     @PostConstruct
     private void initConfig() {
@@ -88,6 +90,8 @@ public class ShiroRealm extends AuthorizingRealm {
         if (User.STATUS_LOCK.equals(user.getStatus())) {
             throw new LockedAccountException("账号已被锁定,请联系管理员！");
         }
+        String deptIds = this.userDataPermissionService.findByUserId(String.valueOf(user.getUserId()));
+        user.setDeptIds(deptIds);
         return new SimpleAuthenticationInfo(user, password, getName());
     }
 

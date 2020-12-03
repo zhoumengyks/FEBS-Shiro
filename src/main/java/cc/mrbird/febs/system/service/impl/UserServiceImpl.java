@@ -214,9 +214,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         List<Menu> permissionList = this.menuService.findUserPermissions(user.getUsername());
         Set<String> permissionSet = permissionList.stream().map(Menu::getPerms).collect(Collectors.toSet());
         user.setStringPermissions(permissionSet);
-
-        String deptIds = this.userDataPermissionService.findByUserId(String.valueOf(user.getUserId()));
-        user.setDeptIds(deptIds);
     }
 
     private void setUserRoles(User user, String[] roles) {
