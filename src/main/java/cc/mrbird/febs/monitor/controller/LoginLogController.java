@@ -42,7 +42,7 @@ public class LoginLogController extends BaseController {
     @GetMapping("delete/{ids}")
     @RequiresPermissions("loginlog:delete")
     @ControllerEndpoint(exceptionMessage = "删除日志失败")
-    public FebsResponse deleteLogss(@NotBlank(message = "{required}") @PathVariable String ids) {
+    public FebsResponse deleteLogs(@NotBlank(message = "{required}") @PathVariable String ids) {
         String[] loginLogIds = ids.split(StringPool.COMMA);
         this.loginLogService.deleteLoginLogs(loginLogIds);
         return new FebsResponse().success();
