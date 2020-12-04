@@ -33,9 +33,6 @@ Jana   | 1234qwer  |跑批人员，负责任务调度跑批模块
 
 名称 | 描述| 地址
 ---|---|---
-FEBS-Shiro 1.x | Spring Boot 2.0.4 & Shiro1.4.2 权限管理系统（单页）。 | [https://github.com/wuyouzhuguli/FEBS-Shiro/tree/mysql](https://github.com/wuyouzhuguli/FEBS-Shiro/tree/mysql)
-FEBS-Security | Spring Boot 2.0.4 & Spring Security 5.0.7 权限管理系统（单页）。 | [https://github.com/wuyouzhuguli/FEBS-Security](https://github.com/wuyouzhuguli/FEBS-Security)
-FEBS-Vue | FEBS-Shiro前后端分离版本，前端架构采用Vue全家桶。 | [https://github.com/wuyouzhuguli/FEBS-Vue](https://github.com/wuyouzhuguli/FEBS-Vue)
 FEBS-Cloud | 基于Spring Cloud的微服务权限系统 | [https://github.com/wuyouzhuguli/FEBS-Cloud](https://github.com/wuyouzhuguli/FEBS-Cloud)
 
 ### 系统模块
