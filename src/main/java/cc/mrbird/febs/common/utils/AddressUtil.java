@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  * @author MrBird
  */
 @Slf4j
-public class AddressUtil {
+public abstract class AddressUtil {
 
     @SuppressWarnings("all")
     public static String getCityInfo(String ip) {

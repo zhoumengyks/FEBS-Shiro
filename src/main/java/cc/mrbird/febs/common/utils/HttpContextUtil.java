@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * @author MrBird
  */
-public class HttpContextUtil {
+public abstract class HttpContextUtil {
 
 	private HttpContextUtil(){
 

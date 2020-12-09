@@ -10,7 +10,7 @@ import org.jsoup.safety.Whitelist;
  *
  * @author MrBird
  */
-public class JsoupUtil {
+public abstract class JsoupUtil {
 
     /**
      * 使用自带的 basicWithImages 白名单

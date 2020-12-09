@@ -1,4 +1,4 @@
-package cc.mrbird.febs.job.util;
+package cc.mrbird.febs.job.utils;
 
 import cc.mrbird.febs.common.utils.SpringContextUtil;
 import cc.mrbird.febs.job.entity.Job;

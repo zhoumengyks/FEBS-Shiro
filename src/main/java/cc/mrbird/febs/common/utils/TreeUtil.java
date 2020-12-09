@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author MrBird
  */
-public class TreeUtil {
+public abstract class TreeUtil {
 
     private static final String TOP_NODE_ID = "0";
 

@@ -1,4 +1,4 @@
-package cc.mrbird.febs.job.util;
+package cc.mrbird.febs.job.utils;
 
 import cc.mrbird.febs.job.entity.Job;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,7 @@ import org.quartz.*;
  * @author MrBird
  */
 @Slf4j
-public class ScheduleUtils {
+public abstract class ScheduleUtil {
 
     private static final String JOB_NAME_PREFIX = "TASK_";
 

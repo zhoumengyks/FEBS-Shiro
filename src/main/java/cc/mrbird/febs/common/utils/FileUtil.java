@@ -20,7 +20,7 @@ import java.util.zip.ZipOutputStream;
  * @author MrBird
  */
 @Slf4j
-public class FileUtil {
+public abstract class FileUtil {
 
     private static final int BUFFER = 1024 * 8;
 
