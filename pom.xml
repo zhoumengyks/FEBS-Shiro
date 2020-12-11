@@ -23,7 +23,6 @@
         <excelKit.version>2.0.72</excelKit.version>
         <ip2region.version>1.7.2</ip2region.version>
         <commons-io.version>2.6</commons-io.version>
-        <freemarker.version>2.3.28</freemarker.version>
         <shiro.redis.version>3.3.1</shiro.redis.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
         <shiro.spring.version>1.6.0</shiro.spring.version>
@@ -110,7 +109,6 @@
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>${freemarker.version}</version>
         </dependency>
 
         <!-- 控制台 SQL日志打印插件 -->
