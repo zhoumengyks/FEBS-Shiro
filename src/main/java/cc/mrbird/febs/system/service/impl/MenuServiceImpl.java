@@ -1,6 +1,5 @@
 package cc.mrbird.febs.system.service.impl;
 
-import cc.mrbird.febs.common.authentication.ShiroRealm;
 import cc.mrbird.febs.common.entity.MenuTree;
 import cc.mrbird.febs.common.event.UserAuthenticationUpdatedEventPublisher;
 import cc.mrbird.febs.common.utils.TreeUtil;
@@ -30,7 +29,6 @@ import java.util.*;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
-    private final ShiroRealm shiroRealm;
     private final IRoleMenuService roleMenuService;
     private final UserAuthenticationUpdatedEventPublisher publisher;
 
