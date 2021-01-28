@@ -45,3 +45,8 @@ logging:
           core:
             metadata:
               TableInfoHelper: error
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: "*"

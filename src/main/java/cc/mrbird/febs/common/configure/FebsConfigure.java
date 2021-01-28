@@ -25,9 +25,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * @author MrBird
  */
-@Configuration
 @EnableOpenApi
 @RequiredArgsConstructor
+@Configuration(proxyBeanMethods = false)
 public class FebsConfigure {
 
     private final FebsProperties properties;

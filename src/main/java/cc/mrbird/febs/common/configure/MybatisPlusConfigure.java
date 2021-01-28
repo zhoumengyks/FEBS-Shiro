@@ -16,8 +16,8 @@ import java.util.List;
 /**
  * @author MrBird
  */
-@Configuration
 @MapperScan("cc.mrbird.febs.*.mapper")
+@Configuration(proxyBeanMethods = false)
 public class MybatisPlusConfigure {
     /**
      * 注册数据权限
