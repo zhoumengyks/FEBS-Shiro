@@ -36,7 +36,7 @@ public class FebsMetricsEndpoint {
 
     private void collectNames(Set<String> names, MeterRegistry registry) {
         if (registry instanceof CompositeMeterRegistry) {
-            ((CompositeMeterRegistry)registry).getRegistries().forEach((member) -> this.collectNames(names, member));
+            ((CompositeMeterRegistry) registry).getRegistries().forEach((member) -> this.collectNames(names, member));
         } else {
             registry.getMeters().stream().map(this::getName).forEach(names::add);
         }
@@ -76,7 +76,7 @@ public class FebsMetricsEndpoint {
     }
 
     private Collection<Meter> findFirstMatchingMeters(MeterRegistry registry, String name, Iterable<Tag> tags) {
-        return registry instanceof CompositeMeterRegistry ? this.findFirstMatchingMeters((CompositeMeterRegistry)registry, name, tags) : registry.find(name).tags(tags).meters();
+        return registry instanceof CompositeMeterRegistry ? this.findFirstMatchingMeters((CompositeMeterRegistry) registry, name, tags) : registry.find(name).tags(tags).meters();
     }
 
     private Collection<Meter> findFirstMatchingMeters(CompositeMeterRegistry composite, String name, Iterable<Tag> tags) {

@@ -50,7 +50,7 @@ public interface FebsConstant {
     /**
      * 任务调度线程前缀
      */
-    String QUARTZ_THREAD_NAME_PREFIX= "febs-job-thread-";
+    String QUARTZ_THREAD_NAME_PREFIX = "febs-job-thread-";
 
     /**
      * 开发环境

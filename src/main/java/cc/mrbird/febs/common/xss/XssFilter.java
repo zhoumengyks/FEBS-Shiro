@@ -21,12 +21,11 @@ import java.util.regex.Pattern;
 @Slf4j
 public class XssFilter implements Filter {
 
+    private final List<String> excludes = new ArrayList<>();
     /**
      * 是否过滤富文本内容
      */
     private boolean flag = false;
-
-    private final List<String> excludes = new ArrayList<>();
 
     @Override
     public void init(FilterConfig filterConfig) {

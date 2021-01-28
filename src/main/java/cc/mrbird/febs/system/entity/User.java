@@ -27,8 +27,6 @@ import java.util.Set;
 @Excel("用户信息表")
 public class User implements Serializable, Cloneable {
 
-    private static final long serialVersionUID = -4352868070794165001L;
-
     /**
      * 用户状态：有效
      */
@@ -73,8 +71,7 @@ public class User implements Serializable, Cloneable {
      * TAB关闭
      */
     public static final String TAB_CLOSE = "0";
-
-
+    private static final long serialVersionUID = -4352868070794165001L;
     /**
      * 用户 ID
      */

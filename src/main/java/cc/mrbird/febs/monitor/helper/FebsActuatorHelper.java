@@ -33,6 +33,11 @@ public class FebsActuatorHelper {
 
     private final FebsMetricsEndpoint metricsEndpoint;
 
+    private static Double convertToMb(Object value) {
+        return new BigDecimal(String.valueOf(value))
+                .divide(DECIMAL, 3, RoundingMode.HALF_UP).doubleValue();
+    }
+
     public List<FebsMetricResponse> getMetricResponseByType(String type) {
         FebsMetricsEndpoint.ListNamesResponse listNames = metricsEndpoint.listNames();
         Set<String> names = listNames.getNames();
@@ -205,10 +210,5 @@ public class FebsActuatorHelper {
             }
         });
         return serverInfo;
-    }
-
-    private static Double convertToMb(Object value) {
-        return new BigDecimal(String.valueOf(value))
-                .divide(DECIMAL, 3, RoundingMode.HALF_UP).doubleValue();
     }
 }

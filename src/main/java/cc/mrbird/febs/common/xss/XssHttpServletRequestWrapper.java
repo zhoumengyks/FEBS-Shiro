@@ -24,6 +24,16 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     }
 
     /**
+     * 获取原始的 request的静态方法
+     */
+    public static HttpServletRequest getOrgRequest(HttpServletRequest req) {
+        if (req instanceof XssHttpServletRequestWrapper) {
+            return ((XssHttpServletRequestWrapper) req).getOrgRequest();
+        }
+        return req;
+    }
+
+    /**
      * 覆盖 getParameter方法，将参数名和参数值都做xss过滤
      * 如果需要获得原始的值，则通过 super.getParameterValues(name)来获取
      * getParameterNames,getParameterValues和 getParameterMap也可能需要覆盖
@@ -70,16 +80,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
      */
     private HttpServletRequest getOrgRequest() {
         return orgRequest;
-    }
-
-    /**
-     * 获取原始的 request的静态方法
-     */
-    public static HttpServletRequest getOrgRequest(HttpServletRequest req) {
-        if (req instanceof XssHttpServletRequestWrapper) {
-            return ((XssHttpServletRequestWrapper) req).getOrgRequest();
-        }
-        return req;
     }
 
 }
