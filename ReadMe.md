@@ -2,7 +2,7 @@
 
 ### FEBS-Shiro 2.0
 ![https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square](https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square)
-![https://img.shields.io/badge/springboot-2.4.0-yellow.svg?style=flat-square](https://img.shields.io/badge/springboot-2.4.0-yellow.svg?style=flat-square)
+![https://img.shields.io/badge/springboot-2.4.2-yellow.svg?style=flat-square](https://img.shields.io/badge/springboot-2.4.2-yellow.svg?style=flat-square)
 ![https://img.shields.io/badge/shiro-1.6.0-orange.svg?longCache=true&style=flat-square](https://img.shields.io/badge/shiro-1.6.0-orange.svg?longCache=true&style=flat-square)
 ![https://img.shields.io/badge/layui-2.5.6-brightgreen.svg?longCache=true&style=flat-square](https://img.shields.io/badge/layui-2.5.6-brightgreen.svg?longCache=true&style=flat-square)
 
@@ -90,7 +90,7 @@ FEBS-Cloud | 基于Spring Cloud的微服务权限系统 | [https://github.com/wu
 ### 技术选型
 
 #### 后端
-- [Spring Boot 2.4.0](http://spring.io/projects/spring-boot/)
+- [Spring Boot 2.4.2](http://spring.io/projects/spring-boot/)
 - [Mybatis-Plus](https://mp.baomidou.com/guide/)
 - [MySQL 5.7.x](https://dev.mysql.com/downloads/mysql/5.7.html#downloads)
 - [Hikari](https://brettwooldridge.github.io/HikariCP/)
