@@ -1,5 +1,7 @@
 package cc.mrbird.febs.common.annotation;
 
+import cc.mrbird.febs.common.entity.Strings;
+
 import java.lang.annotation.*;
 
 /**
@@ -24,7 +26,7 @@ public @interface DataPermission {
      *
      * @return 方法名前缀
      */
-    String methodPrefix() default "";
+    String methodPrefix() default Strings.EMPTY;
 
     /**
      * 数据权限关联字段

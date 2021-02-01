@@ -1,10 +1,10 @@
 package cc.mrbird.febs.system.service.impl;
 
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.system.entity.UserDataPermission;
 import cc.mrbird.febs.system.mapper.UserDataPermissionMapper;
 import cc.mrbird.febs.system.service.IUserDataPermissionService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,6 +38,6 @@ public class UserDataPermissionServiceImpl extends ServiceImpl<UserDataPermissio
     public String findByUserId(String userId) {
         LambdaQueryWrapper<UserDataPermission> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UserDataPermission::getUserId, userId);
-        return this.baseMapper.selectList(wrapper).stream().map(permission -> String.valueOf(permission.getDeptId())).collect(Collectors.joining(StringPool.COMMA));
+        return this.baseMapper.selectList(wrapper).stream().map(permission -> String.valueOf(permission.getDeptId())).collect(Collectors.joining(Strings.COMMA));
     }
 }

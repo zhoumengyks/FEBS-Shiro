@@ -1,6 +1,6 @@
 package cc.mrbird.febs.common.utils;
 
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import cc.mrbird.febs.common.entity.Strings;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
@@ -52,14 +52,14 @@ public abstract class DateUtil {
 
     public static String formatUtcTime(String utcTime) {
         try {
-            String t = StringUtils.replace(utcTime, "T", StringPool.SPACE);
-            String z = StringUtils.replace(t, "Z", StringPool.EMPTY);
+            String t = StringUtils.replace(utcTime, "T", Strings.SPACE);
+            String z = StringUtils.replace(t, "Z", Strings.EMPTY);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FULL_TIME_SPLIT_PATTERN);
             LocalDateTime localDateTime = LocalDateTime.parse(z, formatter);
             LocalDateTime now = localDateTime.plusHours(8);
             return formatFullTime(now, FULL_TIME_SPLIT_PATTERN);
         } catch (Exception ignore) {
-            return StringPool.EMPTY;
+            return Strings.EMPTY;
         }
     }
 }

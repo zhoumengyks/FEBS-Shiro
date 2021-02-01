@@ -1,5 +1,6 @@
 package cc.mrbird.febs.common.xss;
 
+import cc.mrbird.febs.common.entity.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +37,7 @@ public class XssFilter implements Filter {
         }
         String temp = filterConfig.getInitParameter("excludes");
         if (temp != null) {
-            String[] url = temp.split(",");
+            String[] url = StringUtils.split(temp, Strings.COMMA);
             excludes.addAll(Arrays.asList(url));
         }
     }

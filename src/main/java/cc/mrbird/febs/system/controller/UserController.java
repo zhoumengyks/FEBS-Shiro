@@ -4,11 +4,11 @@ import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.Md5Util;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserService;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.wuwenze.poi.ExcelKit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +64,7 @@ public class UserController extends BaseController {
     @RequiresPermissions("user:delete")
     @ControllerEndpoint(operation = "删除用户", exceptionMessage = "删除用户失败")
     public FebsResponse deleteUsers(@NotBlank(message = "{required}") @PathVariable String userIds) {
-        String[] ids = userIds.split(StringPool.COMMA);
+        String[] ids = userIds.split(Strings.COMMA);
         this.userService.deleteUsers(ids);
         return new FebsResponse().success();
     }
@@ -84,7 +84,7 @@ public class UserController extends BaseController {
     @RequiresPermissions("user:password:reset")
     @ControllerEndpoint(exceptionMessage = "重置用户密码失败")
     public FebsResponse resetPassword(@NotBlank(message = "{required}") @PathVariable String usernames) {
-        String[] usernameArr = usernames.split(StringPool.COMMA);
+        String[] usernameArr = usernames.split(Strings.COMMA);
         this.userService.resetPassword(usernameArr);
         return new FebsResponse().success();
     }

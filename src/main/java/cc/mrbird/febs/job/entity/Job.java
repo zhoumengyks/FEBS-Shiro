@@ -61,6 +61,7 @@ public class Job implements Serializable {
     private Date createTime;
     private transient String createTimeFrom;
     private transient String createTimeTo;
+
     public enum ScheduleStatus {
         /**
          * 正常

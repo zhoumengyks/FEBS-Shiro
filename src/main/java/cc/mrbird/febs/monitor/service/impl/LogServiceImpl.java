@@ -3,6 +3,7 @@ package cc.mrbird.febs.monitor.service.impl;
 
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.common.utils.AddressUtil;
 import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.monitor.entity.SystemLog;
@@ -39,8 +40,8 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements
         QueryWrapper<SystemLog> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(systemLog.getCreateTimeFrom()) &&
                 StringUtils.equals(systemLog.getCreateTimeFrom(), systemLog.getCreateTimeTo())) {
-            systemLog.setCreateTimeFrom(systemLog.getCreateTimeFrom() + " 00:00:00");
-            systemLog.setCreateTimeTo(systemLog.getCreateTimeTo() + " 23:59:59");
+            systemLog.setCreateTimeFrom(systemLog.getCreateTimeFrom() + FebsConstant.DAY_START_PATTERN_SUFFIX);
+            systemLog.setCreateTimeTo(systemLog.getCreateTimeTo() + FebsConstant.DAY_END_PATTERN_SUFFIX);
         }
         if (StringUtils.isNotBlank(systemLog.getUsername())) {
             queryWrapper.lambda().eq(SystemLog::getUsername, systemLog.getUsername().toLowerCase());
@@ -85,7 +86,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements
         String className = point.getTarget().getClass().getName();
         // 请求的方法名
         String methodName = method.getName();
-        systemLog.setMethod(className + "." + methodName + "()");
+        systemLog.setMethod(className + Strings.DOT + methodName + "()");
         // 请求的方法参数值
         Object[] args = point.getArgs();
         // 请求的方法参数名称
@@ -121,15 +122,15 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, SystemLog> implements
                         try {
                             aClass.getDeclaredMethod("toString", new Class[]{null});
                             // 如果不抛出 NoSuchMethodException 异常则存在 toString 方法 ，安全的 writeValueAsString ，否则 走 Object的 toString方法
-                            params.append(" ").append(paramNames.get(i)).append(": ").append(objectMapper.writeValueAsString(args[i]));
+                            params.append(Strings.SPACE).append(paramNames.get(i)).append(": ").append(objectMapper.writeValueAsString(args[i]));
                         } catch (NoSuchMethodException e) {
-                            params.append(" ").append(paramNames.get(i)).append(": ").append(objectMapper.writeValueAsString(args[i].toString()));
+                            params.append(Strings.SPACE).append(paramNames.get(i)).append(": ").append(objectMapper.writeValueAsString(args[i].toString()));
                         }
                     } else if (args[i] instanceof MultipartFile) {
                         MultipartFile file = (MultipartFile) args[i];
-                        params.append(" ").append(paramNames.get(i)).append(": ").append(file.getName());
+                        params.append(Strings.SPACE).append(paramNames.get(i)).append(": ").append(file.getName());
                     } else {
-                        params.append(" ").append(paramNames.get(i)).append(": ").append(args[i]);
+                        params.append(Strings.SPACE).append(paramNames.get(i)).append(": ").append(args[i]);
                     }
                 }
             }

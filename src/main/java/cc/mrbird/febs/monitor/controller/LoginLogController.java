@@ -4,9 +4,9 @@ import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.monitor.entity.LoginLog;
 import cc.mrbird.febs.monitor.service.ILoginLogService;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.wuwenze.poi.ExcelKit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ public class LoginLogController extends BaseController {
     @RequiresPermissions("loginlog:delete")
     @ControllerEndpoint(exceptionMessage = "删除日志失败")
     public FebsResponse deleteLogs(@NotBlank(message = "{required}") @PathVariable String ids) {
-        String[] loginLogIds = ids.split(StringPool.COMMA);
+        String[] loginLogIds = ids.split(Strings.COMMA);
         this.loginLogService.deleteLoginLogs(loginLogIds);
         return new FebsResponse().success();
     }

@@ -2,8 +2,8 @@ package cc.mrbird.febs.common.utils;
 
 
 import cc.mrbird.febs.common.entity.FebsConstant;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.system.entity.User;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -40,7 +40,7 @@ public abstract class FebsUtil {
         StringBuilder result = new StringBuilder();
         IntStream.range(0, arr.length).forEach(i -> {
             if (i != arr.length - 1) {
-                result.append(arr[i]).append(StringPool.UNDERSCORE);
+                result.append(arr[i]).append(Strings.UNDER_LINE);
             } else {
                 result.append(arr[i]);
             }
@@ -56,7 +56,7 @@ public abstract class FebsUtil {
      */
     public static String underscoreToCamel(String value) {
         StringBuilder result = new StringBuilder();
-        String[] arr = value.split("_");
+        String[] arr = value.split(Strings.UNDER_LINE);
         for (String s : arr) {
             result.append((String.valueOf(s.charAt(0))).toUpperCase()).append(s.substring(1));
         }

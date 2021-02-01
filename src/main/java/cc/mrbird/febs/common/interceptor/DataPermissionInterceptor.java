@@ -1,6 +1,7 @@
 package cc.mrbird.febs.common.interceptor;
 
 import cc.mrbird.febs.common.annotation.DataPermission;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.system.entity.User;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
@@ -26,6 +27,8 @@ import java.sql.Connection;
 import java.util.Properties;
 
 /**
+ * SQL拦截器，用于动态注入数据权限SQL
+ *
  * @author MrBird
  */
 @Slf4j
@@ -80,7 +83,7 @@ public class DataPermissionInterceptor extends AbstractSqlParserHandler implemen
             Select select = (Select) parserManager.parse(new StringReader(originSql));
             PlainSelect plainSelect = (PlainSelect) select.getSelectBody();
             Table fromItem = (Table) plainSelect.getFromItem();
-
+            // 动态注入数据权限SQL
             String selectTableName = fromItem.getAlias() == null ? fromItem.getName() : fromItem.getAlias().getName();
             String dataPermissionSql = String.format("%s.%s in (%s)", selectTableName, dataPermission.field(), StringUtils.defaultIfBlank(currentUser.getDeptIds(), "'WITHOUT PERMISSIONS'"));
 
@@ -100,7 +103,7 @@ public class DataPermissionInterceptor extends AbstractSqlParserHandler implemen
         String mappedStatementId = mappedStatement.getId();
         DataPermission dataPermission = null;
         try {
-            String className = mappedStatementId.substring(0, mappedStatementId.lastIndexOf("."));
+            String className = mappedStatementId.substring(0, mappedStatementId.lastIndexOf(Strings.DOT));
             final Class<?> clazz = Class.forName(className);
             if (clazz.isAnnotationPresent(DataPermission.class)) {
                 dataPermission = clazz.getAnnotation(DataPermission.class);
@@ -112,7 +115,7 @@ public class DataPermissionInterceptor extends AbstractSqlParserHandler implemen
 
     private Boolean shouldFilter(MappedStatement mappedStatement, DataPermission dataPermission) {
         if (dataPermission != null) {
-            String methodName = StringUtils.substringAfterLast(mappedStatement.getId(), ".");
+            String methodName = StringUtils.substringAfterLast(mappedStatement.getId(), Strings.DOT);
             String methodPrefix = dataPermission.methodPrefix();
             if (StringUtils.isNotBlank(methodPrefix) && StringUtils.startsWith(methodName, methodPrefix)) {
                 return Boolean.TRUE;

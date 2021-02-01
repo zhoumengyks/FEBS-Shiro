@@ -2,6 +2,7 @@ package cc.mrbird.febs.job.service.impl;
 
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.job.entity.Job;
 import cc.mrbird.febs.job.mapper.JobMapper;
@@ -9,7 +10,6 @@ import cc.mrbird.febs.job.service.IJobService;
 import cc.mrbird.febs.job.utils.ScheduleUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -117,7 +117,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateBatch(String jobIds, String status) {
-        List<String> list = Arrays.asList(jobIds.split(StringPool.COMMA));
+        List<String> list = Arrays.asList(jobIds.split(Strings.COMMA));
         Job job = new Job();
         job.setStatus(status);
         this.baseMapper.update(job, new LambdaQueryWrapper<Job>().in(Job::getJobId, list));
@@ -126,14 +126,14 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void run(String jobIds) {
-        String[] list = jobIds.split(StringPool.COMMA);
+        String[] list = jobIds.split(Strings.COMMA);
         Arrays.stream(list).forEach(jobId -> ScheduleUtil.run(scheduler, this.findJob(Long.valueOf(jobId))));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void pause(String jobIds) {
-        String[] list = jobIds.split(StringPool.COMMA);
+        String[] list = jobIds.split(Strings.COMMA);
         Arrays.stream(list).forEach(jobId -> ScheduleUtil.pauseJob(scheduler, Long.valueOf(jobId)));
         this.updateBatch(jobIds, Job.ScheduleStatus.PAUSE.getValue());
     }
@@ -141,7 +141,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void resume(String jobIds) {
-        String[] list = jobIds.split(StringPool.COMMA);
+        String[] list = jobIds.split(Strings.COMMA);
         Arrays.stream(list).forEach(jobId -> ScheduleUtil.resumeJob(scheduler, Long.valueOf(jobId)));
         this.updateBatch(jobIds, Job.ScheduleStatus.NORMAL.getValue());
     }

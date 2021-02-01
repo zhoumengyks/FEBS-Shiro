@@ -2,6 +2,7 @@ package cc.mrbird.febs.system.service.impl;
 
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.common.event.UserAuthenticationUpdatedEventPublisher;
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.FebsUtil;
@@ -13,7 +14,6 @@ import cc.mrbird.febs.system.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Sets;
@@ -51,8 +51,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public IPage<User> findUserDetailList(User user, QueryRequest request) {
         if (StringUtils.isNotBlank(user.getCreateTimeFrom()) &&
                 StringUtils.equals(user.getCreateTimeFrom(), user.getCreateTimeTo())) {
-            user.setCreateTimeFrom(user.getCreateTimeFrom() + " 00:00:00");
-            user.setCreateTimeTo(user.getCreateTimeTo() + " 23:59:59");
+            user.setCreateTimeFrom(user.getCreateTimeFrom() + FebsConstant.DAY_START_PATTERN_SUFFIX);
+            user.setCreateTimeTo(user.getCreateTimeTo() + FebsConstant.DAY_END_PATTERN_SUFFIX);
         }
         Page<User> page = new Page<>(request.getPageNum(), request.getPageSize());
         page.setSearchCount(false);
@@ -88,10 +88,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setPassword(Md5Util.encrypt(user.getUsername(), User.DEFAULT_PASSWORD));
         save(user);
         // 保存用户角色
-        String[] roles = user.getRoleId().split(StringPool.COMMA);
+        String[] roles = user.getRoleId().split(Strings.COMMA);
         setUserRoles(user, roles);
         // 保存用户数据权限关联关系
-        String[] deptIds = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getDeptIds(), StringPool.COMMA);
+        String[] deptIds = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getDeptIds(), Strings.COMMA);
         if (ArrayUtils.isNotEmpty(deptIds)) {
             setUserDataPermissions(user, deptIds);
         }
@@ -120,11 +120,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
         String[] userId = {String.valueOf(user.getUserId())};
         this.userRoleService.deleteUserRolesByUserId(Arrays.asList(userId));
-        String[] roles = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getRoleId(), StringPool.COMMA);
+        String[] roles = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getRoleId(), Strings.COMMA);
         setUserRoles(user, roles);
 
         userDataPermissionService.deleteByUserIds(userId);
-        String[] deptIds = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getDeptIds(), StringPool.COMMA);
+        String[] deptIds = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getDeptIds(), Strings.COMMA);
         if (ArrayUtils.isNotEmpty(deptIds)) {
             setUserDataPermissions(user, deptIds);
         }

@@ -1,6 +1,7 @@
 package cc.mrbird.febs.generator.helper;
 
 import cc.mrbird.febs.common.annotation.Helper;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.common.utils.AddressUtil;
 import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.generator.entity.Column;
@@ -29,7 +30,7 @@ public class GeneratorHelper {
 
     private static String getFilePath(GeneratorConfig configure, String packagePath, String suffix, boolean serviceInterface) {
         String filePath = GeneratorConstant.TEMP_PATH + configure.getJavaPath() +
-                packageConvertPath(configure.getBasePackage() + "." + packagePath);
+                packageConvertPath(configure.getBasePackage() + Strings.DOT + packagePath);
         if (serviceInterface) {
             filePath += "I";
         }
@@ -38,7 +39,7 @@ public class GeneratorHelper {
     }
 
     private static String packageConvertPath(String packageName) {
-        return String.format("/%s/", packageName.contains(".") ? packageName.replaceAll("\\.", "/") : packageName);
+        return String.format("/%s/", packageName.contains(Strings.DOT) ? packageName.replaceAll("\\.", Strings.SLASH) : packageName);
     }
 
     public void generateEntityFile(List<Column> columns, GeneratorConfig configure) throws Exception {
@@ -106,7 +107,7 @@ public class GeneratorHelper {
         Template template = getTemplate(templateName);
         Files.createParentDirs(file);
         FileOutputStream fileOutputStream = new FileOutputStream(file);
-        try (Writer out = new BufferedWriter(new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8), 10240)) {
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8), 1024)) {
             template.process(data, out);
         } catch (Exception e) {
             String message = "代码生成异常";
@@ -121,7 +122,7 @@ public class GeneratorHelper {
         File file = new File(templatePath);
         if (!file.exists()) {
             templatePath = System.getProperties().getProperty("java.io.tmpdir");
-            file = new File(templatePath + "/" + templateName);
+            file = new File(templatePath + Strings.SLASH + templateName);
             FileUtils.copyInputStreamToFile(Objects.requireNonNull(AddressUtil.class.getClassLoader().getResourceAsStream("classpath:generator/templates/" + templateName)), file);
         }
         configuration.setDirectoryForTemplateLoading(new File(templatePath));

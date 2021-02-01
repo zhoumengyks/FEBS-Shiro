@@ -5,10 +5,10 @@ import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.entity.DeptTree;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.system.entity.Dept;
 import cc.mrbird.febs.system.service.IDeptService;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.wuwenze.poi.ExcelKit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +57,7 @@ public class DeptController {
     @RequiresPermissions("dept:delete")
     @ControllerEndpoint(operation = "删除部门", exceptionMessage = "删除部门失败")
     public FebsResponse deleteDept(@NotBlank(message = "{required}") @PathVariable String deptIds) throws FebsException {
-        String[] ids = deptIds.split(StringPool.COMMA);
+        String[] ids = deptIds.split(Strings.COMMA);
         this.deptService.deleteDept(ids);
         return new FebsResponse().success();
     }

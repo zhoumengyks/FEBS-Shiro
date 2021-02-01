@@ -2,6 +2,7 @@ package cc.mrbird.febs.common.aspect;
 
 import cc.mrbird.febs.common.annotation.Limit;
 import cc.mrbird.febs.common.entity.LimitType;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.common.exception.LimitAccessException;
 import cc.mrbird.febs.common.utils.HttpContextUtil;
 import cc.mrbird.febs.common.utils.IpUtil;
@@ -60,7 +61,7 @@ public class LimitAspect extends BaseAspectSupport {
             default:
                 key = StringUtils.upperCase(method.getName());
         }
-        ImmutableList<String> keys = ImmutableList.of(StringUtils.join(limitAnnotation.prefix() + "_", key, ip));
+        ImmutableList<String> keys = ImmutableList.of(StringUtils.join(limitAnnotation.prefix() + Strings.UNDER_LINE, key, ip));
         String luaScript = buildLuaScript();
         RedisScript<Long> redisScript = new DefaultRedisScript<>(luaScript, Long.class);
         Long count = redisTemplate.execute(redisScript, keys, limitCount, limitPeriod);

@@ -2,6 +2,7 @@ package cc.mrbird.febs.system.service.impl;
 
 import cc.mrbird.febs.common.entity.FebsConstant;
 import cc.mrbird.febs.common.entity.QueryRequest;
+import cc.mrbird.febs.common.entity.Strings;
 import cc.mrbird.febs.common.event.UserAuthenticationUpdatedEventPublisher;
 import cc.mrbird.febs.common.utils.SortUtil;
 import cc.mrbird.febs.system.entity.Role;
@@ -12,7 +13,6 @@ import cc.mrbird.febs.system.service.IRoleService;
 import cc.mrbird.febs.system.service.IUserRoleService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
@@ -93,7 +93,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteRoles(String roleIds) {
-        List<String> list = Arrays.asList(roleIds.split(StringPool.COMMA));
+        List<String> list = Arrays.asList(roleIds.split(Strings.COMMA));
         this.baseMapper.delete(new QueryWrapper<Role>().lambda().in(Role::getRoleId, list));
 
         this.roleMenuService.deleteRoleMenusByRoleId(list);
@@ -107,7 +107,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     private void saveRoleMenus(Role role) {
         if (StringUtils.isNotBlank(role.getMenuIds())) {
-            String[] menuIds = role.getMenuIds().split(StringPool.COMMA);
+            String[] menuIds = role.getMenuIds().split(Strings.COMMA);
             List<RoleMenu> roleMenus = Lists.newArrayList();
             Arrays.stream(menuIds).forEach(menuId -> {
                 RoleMenu roleMenu = new RoleMenu();
