@@ -1,5 +1,6 @@
 package cc.mrbird.febs.monitor.controller;
 
+import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.monitor.entity.ActiveUser;
 import cc.mrbird.febs.monitor.service.ISessionService;
@@ -11,9 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author MrBird
@@ -21,7 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("session")
 @RequiredArgsConstructor
-public class SessionController {
+public class SessionController extends BaseController {
 
     private final ISessionService sessionService;
 
@@ -29,10 +28,8 @@ public class SessionController {
     @RequiresPermissions("online:view")
     public FebsResponse list(String username) {
         List<ActiveUser> list = sessionService.list(username);
-        Map<String, Object> data = new HashMap<>(4);
-        data.put("rows", list);
-        data.put("total", CollectionUtils.size(list));
-        return new FebsResponse().success().data(data);
+        return new FebsResponse().success()
+                .data(getDataTable(list, CollectionUtils.size(list)));
     }
 
     @GetMapping("delete/{id}")

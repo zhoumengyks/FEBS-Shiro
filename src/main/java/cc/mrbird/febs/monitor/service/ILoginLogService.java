@@ -31,6 +31,13 @@ public interface ILoginLogService extends IService<LoginLog> {
     void saveLoginLog(LoginLog loginLog);
 
     /**
+     * 保存登录日志
+     *
+     * @param username 用户名
+     */
+    void saveLoginLog(String username);
+
+    /**
      * 删除登录日志
      *
      * @param ids 日志 id集合
@@ -65,4 +72,12 @@ public interface ILoginLogService extends IService<LoginLog> {
      * @return 系统近七天来的访问记录
      */
     List<Map<String, Object>> findLastSevenDaysVisitCount(User user);
+
+    /**
+     * 获取首页数据
+     *
+     * @param username 用户名
+     * @return 数据Map
+     */
+    Map<String, Object> retrieveIndexPageData(String username);
 }

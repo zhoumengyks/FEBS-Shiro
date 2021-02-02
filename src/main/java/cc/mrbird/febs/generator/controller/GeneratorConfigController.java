@@ -41,7 +41,7 @@ public class GeneratorConfigController extends BaseController {
         if (StringUtils.isBlank(generatorConfig.getId())) {
             throw new FebsException("配置id不能为空");
         }
-        this.generatorConfigService.updateGeneratorConfig(generatorConfig);
+        generatorConfigService.updateGeneratorConfig(generatorConfig);
         return new FebsResponse().success();
     }
 }

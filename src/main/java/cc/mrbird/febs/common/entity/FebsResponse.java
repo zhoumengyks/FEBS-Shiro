@@ -12,27 +12,27 @@ public class FebsResponse extends HashMap<String, Object> {
     private static final long serialVersionUID = -8713837118340960775L;
 
     public FebsResponse code(HttpStatus status) {
-        this.put("code", status.value());
+        put("code", status.value());
         return this;
     }
 
     public FebsResponse message(String message) {
-        this.put("message", message);
+        put("message", message);
         return this;
     }
 
     public FebsResponse data(Object data) {
-        this.put("data", data);
+        put("data", data);
         return this;
     }
 
     public FebsResponse success() {
-        this.code(HttpStatus.OK);
+        code(HttpStatus.OK);
         return this;
     }
 
     public FebsResponse fail() {
-        this.code(HttpStatus.INTERNAL_SERVER_ERROR);
+        code(HttpStatus.INTERNAL_SERVER_ERROR);
         return this;
     }
 

@@ -39,18 +39,18 @@ public class JobLogServiceImpl extends ServiceImpl<JobLogMapper, JobLog> impleme
         }
         Page<JobLog> page = new Page<>(request.getPageNum(), request.getPageSize());
         SortUtil.handlePageSort(request, page, "createTime", FebsConstant.ORDER_DESC, true);
-        return this.page(page, queryWrapper);
+        return page(page, queryWrapper);
     }
 
     @Override
     public void saveJobLog(JobLog log) {
-        this.save(log);
+        save(log);
     }
 
     @Override
     public void deleteJobLogs(String[] jobLogIds) {
         List<String> list = Arrays.asList(jobLogIds);
-        this.baseMapper.deleteBatchIds(list);
+        baseMapper.deleteBatchIds(list);
     }
 
 }

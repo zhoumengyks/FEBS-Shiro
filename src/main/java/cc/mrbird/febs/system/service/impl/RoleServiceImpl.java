@@ -42,7 +42,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public List<Role> findUserRole(String username) {
-        return this.baseMapper.findUserRole(username);
+        return baseMapper.findUserRole(username);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         if (StringUtils.isNotBlank(role.getRoleName())) {
             queryWrapper.lambda().like(Role::getRoleName, role.getRoleName());
         }
-        return this.baseMapper.selectList(queryWrapper);
+        return baseMapper.selectList(queryWrapper);
     }
 
     @Override
@@ -60,31 +60,31 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         page.setSearchCount(false);
         page.setTotal(baseMapper.countRole(role));
         SortUtil.handlePageSort(request, page, "createTime", FebsConstant.ORDER_DESC, false);
-        return this.baseMapper.findRolePage(page, role);
+        return baseMapper.findRolePage(page, role);
     }
 
     @Override
     public Role findByName(String roleName) {
-        return this.baseMapper.selectOne(new QueryWrapper<Role>().lambda().eq(Role::getRoleName, roleName));
+        return baseMapper.selectOne(new QueryWrapper<Role>().lambda().eq(Role::getRoleName, roleName));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createRole(Role role) {
         role.setCreateTime(new Date());
-        this.baseMapper.insert(role);
-        this.saveRoleMenus(role);
+        baseMapper.insert(role);
+        saveRoleMenus(role);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateRole(Role role) {
         role.setModifyTime(new Date());
-        this.updateById(role);
+        updateById(role);
         List<String> roleIdList = Lists.newArrayList(String.valueOf(role.getRoleId()));
-        this.roleMenuService.deleteRoleMenusByRoleId(roleIdList);
+        roleMenuService.deleteRoleMenusByRoleId(roleIdList);
         saveRoleMenus(role);
-        Set<Long> userIds = this.userRoleService.findUserIdByRoleId(role.getRoleId());
+        Set<Long> userIds = userRoleService.findUserIdByRoleId(role.getRoleId());
         if (CollectionUtils.isNotEmpty(userIds)) {
             publisher.publishEvent(userIds);
         }
@@ -94,12 +94,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Transactional(rollbackFor = Exception.class)
     public void deleteRoles(String roleIds) {
         List<String> list = Arrays.asList(roleIds.split(Strings.COMMA));
-        this.baseMapper.delete(new QueryWrapper<Role>().lambda().in(Role::getRoleId, list));
+        baseMapper.delete(new QueryWrapper<Role>().lambda().in(Role::getRoleId, list));
 
-        this.roleMenuService.deleteRoleMenusByRoleId(list);
-        this.userRoleService.deleteUserRolesByRoleId(list);
+        roleMenuService.deleteRoleMenusByRoleId(list);
+        userRoleService.deleteUserRolesByRoleId(list);
 
-        Set<Long> userIds = this.userRoleService.findUserIdByRoleIds(list);
+        Set<Long> userIds = userRoleService.findUserIdByRoleIds(list);
         if (CollectionUtils.isNotEmpty(userIds)) {
             publisher.publishEvent(userIds);
         }

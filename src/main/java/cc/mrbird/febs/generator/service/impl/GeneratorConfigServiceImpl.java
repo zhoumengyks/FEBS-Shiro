@@ -20,13 +20,13 @@ public class GeneratorConfigServiceImpl extends ServiceImpl<GeneratorConfigMappe
 
     @Override
     public GeneratorConfig findGeneratorConfig() {
-        List<GeneratorConfig> generatorConfigs = this.baseMapper.selectList(null);
+        List<GeneratorConfig> generatorConfigs = baseMapper.selectList(null);
         return CollectionUtils.isNotEmpty(generatorConfigs) ? generatorConfigs.get(0) : null;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateGeneratorConfig(GeneratorConfig generatorConfig) {
-        this.saveOrUpdate(generatorConfig);
+        saveOrUpdate(generatorConfig);
     }
 }

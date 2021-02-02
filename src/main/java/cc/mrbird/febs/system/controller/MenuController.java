@@ -4,10 +4,8 @@ package cc.mrbird.febs.system.controller;
 import cc.mrbird.febs.common.annotation.ControllerEndpoint;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
-import cc.mrbird.febs.common.entity.MenuTree;
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.system.entity.Menu;
-import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IMenuService;
 import com.wuwenze.poi.ExcelKit;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 /**
  * @author MrBird
@@ -34,26 +31,24 @@ public class MenuController extends BaseController {
 
     @GetMapping("{username}")
     public FebsResponse getUserMenus(@NotBlank(message = "{required}") @PathVariable String username) throws FebsException {
-        User currentUser = getCurrentUser();
-        if (!StringUtils.equalsIgnoreCase(username, currentUser.getUsername())) {
+        if (!StringUtils.equalsIgnoreCase(username, getCurrentUser().getUsername())) {
             throw new FebsException("您无权获取别人的菜单");
         }
-        MenuTree<Menu> userMenus = this.menuService.findUserMenus(username);
-        return new FebsResponse().data(userMenus);
+        return new FebsResponse().data(menuService.findUserMenus(username));
     }
 
     @GetMapping("tree")
     @ControllerEndpoint(exceptionMessage = "获取菜单树失败")
     public FebsResponse getMenuTree(Menu menu) {
-        MenuTree<Menu> menus = this.menuService.findMenus(menu);
-        return new FebsResponse().success().data(menus.getChilds());
+        return new FebsResponse().success()
+                .data(menuService.findMenus(menu).getChilds());
     }
 
     @PostMapping
     @RequiresPermissions("menu:add")
     @ControllerEndpoint(operation = "新增菜单/按钮", exceptionMessage = "新增菜单/按钮失败")
     public FebsResponse addMenu(@Valid Menu menu) {
-        this.menuService.createMenu(menu);
+        menuService.createMenu(menu);
         return new FebsResponse().success();
     }
 
@@ -61,7 +56,7 @@ public class MenuController extends BaseController {
     @RequiresPermissions("menu:delete")
     @ControllerEndpoint(operation = "删除菜单/按钮", exceptionMessage = "删除菜单/按钮失败")
     public FebsResponse deleteMenus(@NotBlank(message = "{required}") @PathVariable String menuIds) {
-        this.menuService.deleteMenus(menuIds);
+        menuService.deleteMenus(menuIds);
         return new FebsResponse().success();
     }
 
@@ -69,7 +64,7 @@ public class MenuController extends BaseController {
     @RequiresPermissions("menu:update")
     @ControllerEndpoint(operation = "修改菜单/按钮", exceptionMessage = "修改菜单/按钮失败")
     public FebsResponse updateMenu(@Valid Menu menu) {
-        this.menuService.updateMenu(menu);
+        menuService.updateMenu(menu);
         return new FebsResponse().success();
     }
 
@@ -77,7 +72,6 @@ public class MenuController extends BaseController {
     @RequiresPermissions("menu:export")
     @ControllerEndpoint(exceptionMessage = "导出Excel失败")
     public void export(Menu menu, HttpServletResponse response) {
-        List<Menu> menus = this.menuService.findMenuList(menu);
-        ExcelKit.$Export(Menu.class, response).downXlsx(menus, false);
+        ExcelKit.$Export(Menu.class, response).downXlsx(menuService.findMenuList(menu), false);
     }
 }

@@ -19,7 +19,7 @@ public class FebsHttpTraceEndpoint {
     }
 
     public FebsHttpTraceDescriptor traces() {
-        return new FebsHttpTraceDescriptor(this.repository.findAll());
+        return new FebsHttpTraceDescriptor(repository.findAll());
     }
 
     public static final class FebsHttpTraceDescriptor {
@@ -31,7 +31,7 @@ public class FebsHttpTraceEndpoint {
         }
 
         public List<HttpTrace> getTraces() {
-            return this.traces;
+            return traces;
         }
     }
 }

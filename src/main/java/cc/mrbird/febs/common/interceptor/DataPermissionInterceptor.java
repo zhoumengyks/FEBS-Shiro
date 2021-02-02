@@ -39,7 +39,7 @@ public class DataPermissionInterceptor extends AbstractSqlParserHandler implemen
     public Object intercept(Invocation invocation) throws Throwable {
         StatementHandler statementHandler = PluginUtils.realTarget(invocation.getTarget());
         MetaObject metaObject = SystemMetaObject.forObject(statementHandler);
-        this.sqlParser(metaObject);
+        sqlParser(metaObject);
         MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
 
         BoundSql boundSql = (BoundSql) metaObject.getValue("delegate.boundSql");

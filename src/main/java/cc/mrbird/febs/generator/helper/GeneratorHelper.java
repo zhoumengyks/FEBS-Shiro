@@ -57,7 +57,7 @@ public class GeneratorHelper {
             }
         });
         configure.setColumns(columns);
-        this.generateFileByTemplate(templateName, entityFile, configure);
+        generateFileByTemplate(templateName, entityFile, configure);
     }
 
     public void generateMapperFile(List<Column> columns, GeneratorConfig configure) throws Exception {
@@ -100,6 +100,15 @@ public class GeneratorHelper {
         columns.forEach(c -> c.setField(FebsUtil.underscoreToCamel(StringUtils.lowerCase(c.getName()))));
         configure.setColumns(columns);
         generateFileByTemplate(templateName, mapperXmlFile, configure);
+    }
+
+    public void generateCodeFile(List<Column> columns, GeneratorConfig configure) throws Exception {
+        generateEntityFile(columns, configure);
+        generateMapperFile(columns, configure);
+        generateMapperXmlFile(columns, configure);
+        generateServiceFile(columns, configure);
+        generateServiceImplFile(columns, configure);
+        generateControllerFile(columns, configure);
     }
 
     @SuppressWarnings("UnstableApiUsage")

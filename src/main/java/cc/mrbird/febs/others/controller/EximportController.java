@@ -46,8 +46,8 @@ public class EximportController extends BaseController {
     @GetMapping
     @RequiresPermissions("others:eximport:view")
     public FebsResponse findEximports(QueryRequest request) {
-        Map<String, Object> dataTable = getDataTable(eximportService.findEximports(request, null));
-        return new FebsResponse().success().data(dataTable);
+        return new FebsResponse().success()
+                .data(getDataTable(eximportService.findEximports(request, null)));
     }
 
     /**
@@ -103,7 +103,7 @@ public class EximportController extends BaseController {
         });
         if (CollectionUtils.isNotEmpty(data)) {
             // 将合法的记录批量入库
-            this.eximportService.batchInsert(data);
+            eximportService.batchInsert(data);
         }
         ImmutableMap<String, Object> result = ImmutableMap.of(
                 "time", stopwatch.stop().toString(),
@@ -117,7 +117,7 @@ public class EximportController extends BaseController {
     @RequiresPermissions("eximport:export")
     @ControllerEndpoint(exceptionMessage = "导出Excel失败")
     public void export(QueryRequest queryRequest, Eximport eximport, HttpServletResponse response) {
-        List<Eximport> eximports = this.eximportService.findEximports(queryRequest, eximport).getRecords();
-        ExcelKit.$Export(Eximport.class, response).downXlsx(eximports, false);
+        ExcelKit.$Export(Eximport.class, response)
+                .downXlsx(eximportService.findEximports(queryRequest, eximport).getRecords(), false);
     }
 }

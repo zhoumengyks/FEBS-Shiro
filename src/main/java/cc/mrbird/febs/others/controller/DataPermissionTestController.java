@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 /**
  * Controller
  *
@@ -31,7 +29,7 @@ public class DataPermissionTestController extends BaseController {
     @GetMapping("list")
     @RequiresPermissions("others:datapermission")
     public FebsResponse dataPermissionTestList(QueryRequest request, DataPermissionTest dataPermissionTest) {
-        Map<String, Object> dataTable = getDataTable(this.dataPermissionTestService.findDataPermissionTests(request, dataPermissionTest));
-        return new FebsResponse().success().data(dataTable);
+        return new FebsResponse().success()
+                .data(getDataTable(dataPermissionTestService.findDataPermissionTests(request, dataPermissionTest)));
     }
 }

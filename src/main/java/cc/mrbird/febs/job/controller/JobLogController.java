@@ -10,6 +10,7 @@ import cc.mrbird.febs.job.service.IJobLogService;
 import com.wuwenze.poi.ExcelKit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author MrBird
@@ -37,16 +36,15 @@ public class JobLogController extends BaseController {
     @GetMapping
     @RequiresPermissions("job:log:view")
     public FebsResponse jobLogList(QueryRequest request, JobLog log) {
-        Map<String, Object> dataTable = getDataTable(this.jobLogService.findJobLogs(request, log));
-        return new FebsResponse().success().data(dataTable);
+        return new FebsResponse().success()
+                .data(getDataTable(jobLogService.findJobLogs(request, log)));
     }
 
     @GetMapping("delete/{jobIds}")
     @RequiresPermissions("job:log:delete")
     @ControllerEndpoint(exceptionMessage = "删除调度日志失败")
     public FebsResponse deleteJobLog(@NotBlank(message = "{required}") @PathVariable String jobIds) {
-        String[] ids = jobIds.split(Strings.COMMA);
-        this.jobLogService.deleteJobLogs(ids);
+        jobLogService.deleteJobLogs(StringUtils.split(jobIds, Strings.COMMA));
         return new FebsResponse().success();
     }
 
@@ -54,7 +52,7 @@ public class JobLogController extends BaseController {
     @RequiresPermissions("job:log:export")
     @ControllerEndpoint(exceptionMessage = "导出Excel失败")
     public void export(QueryRequest request, JobLog jobLog, HttpServletResponse response) {
-        List<JobLog> jobLogs = this.jobLogService.findJobLogs(request, jobLog).getRecords();
-        ExcelKit.$Export(JobLog.class, response).downXlsx(jobLogs, false);
+        ExcelKit.$Export(JobLog.class, response)
+                .downXlsx(jobLogService.findJobLogs(request, jobLog).getRecords(), false);
     }
 }

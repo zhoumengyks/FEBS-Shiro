@@ -18,10 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author MrBird
@@ -48,8 +45,7 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
 
         Page<LoginLog> page = new Page<>(request.getPageNum(), request.getPageSize());
         SortUtil.handlePageSort(request, page, "loginTime", FebsConstant.ORDER_DESC, true);
-
-        return this.page(page, queryWrapper);
+        return page(page, queryWrapper);
     }
 
     @Override
@@ -59,7 +55,15 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
         String ip = IpUtil.getIpAddr(request);
         loginLog.setIp(ip);
         loginLog.setLocation(AddressUtil.getCityInfo(ip));
-        this.save(loginLog);
+        save(loginLog);
+    }
+
+    @Override
+    public void saveLoginLog(String username) {
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUsername(username);
+        loginLog.setSystemBrowserInfo();
+        saveLoginLog(loginLog);
     }
 
     @Override
@@ -70,21 +74,44 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
 
     @Override
     public Long findTotalVisitCount() {
-        return this.baseMapper.findTotalVisitCount();
+        return baseMapper.findTotalVisitCount();
     }
 
     @Override
     public Long findTodayVisitCount() {
-        return this.baseMapper.findTodayVisitCount();
+        return baseMapper.findTodayVisitCount();
     }
 
     @Override
     public Long findTodayIp() {
-        return this.baseMapper.findTodayIp();
+        return baseMapper.findTodayIp();
     }
 
     @Override
     public List<Map<String, Object>> findLastSevenDaysVisitCount(User user) {
-        return this.baseMapper.findLastSevenDaysVisitCount(user);
+        return baseMapper.findLastSevenDaysVisitCount(user);
+    }
+
+    private List<Map<String, Object>> findLastSevenDaysVisitCount() {
+        return findLastSevenDaysVisitCount(new User());
+    }
+
+    private List<Map<String, Object>> findLastSevenDaysVisitCount(String username) {
+        User param = new User();
+        param.setUsername(username);
+        return findLastSevenDaysVisitCount(param);
+    }
+
+    @Override
+    public Map<String, Object> retrieveIndexPageData(String username) {
+        Map<String, Object> data = new HashMap<>(8);
+        // 获取系统访问记录
+        data.put("totalVisitCount", findTotalVisitCount());
+        data.put("todayVisitCount", findTodayVisitCount());
+        data.put("todayIp", findTodayIp());
+        // 获取近期系统访问记录
+        data.put("lastSevenVisitCount", findLastSevenDaysVisitCount());
+        data.put("lastSevenUserVisitCount", findLastSevenDaysVisitCount(username));
+        return data;
     }
 }

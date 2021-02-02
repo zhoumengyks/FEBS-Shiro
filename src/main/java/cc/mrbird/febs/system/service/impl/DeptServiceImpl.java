@@ -36,8 +36,8 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
 
     @Override
     public List<DeptTree<Dept>> findDept() {
-        List<Dept> deptList = this.baseMapper.selectList(new QueryWrapper<>());
-        List<DeptTree<Dept>> trees = this.convertDept(deptList);
+        List<Dept> deptList = baseMapper.selectList(new QueryWrapper<>());
+        List<DeptTree<Dept>> trees = convertDept(deptList);
         return TreeUtil.buildDeptTree(trees);
     }
 
@@ -50,8 +50,8 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
         }
         queryWrapper.lambda().orderByAsc(Dept::getOrderNum);
 
-        List<Dept> deptList = this.baseMapper.selectList(queryWrapper);
-        List<DeptTree<Dept>> trees = this.convertDept(deptList);
+        List<Dept> deptList = baseMapper.selectList(queryWrapper);
+        List<DeptTree<Dept>> trees = convertDept(deptList);
         return TreeUtil.buildDeptTree(trees);
     }
 
@@ -63,7 +63,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
             queryWrapper.lambda().eq(Dept::getDeptName, dept.getDeptName());
         }
         SortUtil.handleWrapperSort(request, queryWrapper, "orderNum", FebsConstant.ORDER_ASC, true);
-        return this.baseMapper.selectList(queryWrapper);
+        return baseMapper.selectList(queryWrapper);
     }
 
     @Override
@@ -74,20 +74,20 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
             dept.setParentId(Dept.TOP_NODE);
         }
         dept.setCreateTime(new Date());
-        this.save(dept);
+        save(dept);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateDept(Dept dept) {
         dept.setModifyTime(new Date());
-        this.baseMapper.updateById(dept);
+        baseMapper.updateById(dept);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteDept(String[] deptIds) {
-        this.delete(Arrays.asList(deptIds));
+        delete(Arrays.asList(deptIds));
     }
 
     private List<DeptTree<Dept>> convertDept(List<Dept> Dept) {
@@ -113,7 +113,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
         if (CollectionUtils.isNotEmpty(Dept)) {
             List<String> deptIdList = new ArrayList<>();
             Dept.forEach(d -> deptIdList.add(String.valueOf(d.getDeptId())));
-            this.delete(deptIdList);
+            delete(deptIdList);
         }
     }
 }

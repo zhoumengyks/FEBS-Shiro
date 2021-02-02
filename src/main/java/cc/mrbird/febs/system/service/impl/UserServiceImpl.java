@@ -44,7 +44,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User findByName(String username) {
-        return this.baseMapper.findByName(username);
+        return baseMapper.findByName(username);
     }
 
     @Override
@@ -58,14 +58,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         page.setSearchCount(false);
         page.setTotal(baseMapper.countUserDetail(user));
         SortUtil.handlePageSort(request, page, "userId", FebsConstant.ORDER_ASC, false);
-        return this.baseMapper.findUserDetailPage(page, user);
+        return baseMapper.findUserDetailPage(page, user);
     }
 
     @Override
     public User findUserDetailList(String username) {
         User param = new User();
         param.setUsername(username);
-        List<User> users = this.baseMapper.findUserDetail(param);
+        List<User> users = baseMapper.findUserDetail(param);
         return CollectionUtils.isNotEmpty(users) ? users.get(0) : null;
     }
 
@@ -74,7 +74,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void updateLoginTime(String username) {
         User user = new User();
         user.setLastLoginTime(new Date());
-        this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
+        baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 
     @Override
@@ -102,11 +102,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public void deleteUsers(String[] userIds) {
         List<String> list = Arrays.asList(userIds);
         // 删除用户
-        this.removeByIds(list);
+        removeByIds(list);
         // 删除关联角色
-        this.userRoleService.deleteUserRolesByUserId(list);
+        userRoleService.deleteUserRolesByUserId(list);
         // 删除关联数据权限
-        this.userDataPermissionService.deleteByUserIds(userIds);
+        userDataPermissionService.deleteByUserIds(userIds);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         updateById(user);
 
         String[] userId = {String.valueOf(user.getUserId())};
-        this.userRoleService.deleteUserRolesByUserId(Arrays.asList(userId));
+        userRoleService.deleteUserRolesByUserId(Arrays.asList(userId));
         String[] roles = StringUtils.splitByWholeSeparatorPreserveAllTokens(user.getRoleId(), Strings.COMMA);
         setUserRoles(user, roles);
 
@@ -137,7 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         Arrays.stream(usernames).forEach(username -> {
             User user = new User();
             user.setPassword(Md5Util.encrypt(username, User.DEFAULT_PASSWORD));
-            this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
+            baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
         });
     }
 
@@ -154,12 +154,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setTheme(User.THEME_BLACK);
         user.setIsTab(User.TAB_OPEN);
         user.setDescription("注册用户");
-        this.save(user);
+        save(user);
 
         UserRole ur = new UserRole();
         ur.setUserId(user.getUserId());
         ur.setRoleId(FebsConstant.REGISTER_ROLE_ID);
-        this.userRoleService.save(ur);
+        userRoleService.save(ur);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User user = new User();
         user.setPassword(Md5Util.encrypt(username, password));
         user.setModifyTime(new Date());
-        this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
+        baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 
     @Override
@@ -177,7 +177,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User user = new User();
         user.setAvatar(avatar);
         user.setModifyTime(new Date());
-        this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
+        baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 
     @Override
@@ -187,7 +187,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setTheme(theme);
         user.setIsTab(isTab);
         user.setModifyTime(new Date());
-        this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
+        baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 
     @Override
@@ -206,12 +206,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public void doGetUserAuthorizationInfo(User user) {
         // 获取用户角色集
-        List<Role> roleList = this.roleService.findUserRole(user.getUsername());
+        List<Role> roleList = roleService.findUserRole(user.getUsername());
         Set<String> roleSet = roleList.stream().map(Role::getRoleName).collect(Collectors.toSet());
         user.setRoles(roleSet);
 
         // 获取用户权限集
-        List<Menu> permissionList = this.menuService.findUserPermissions(user.getUsername());
+        List<Menu> permissionList = menuService.findUserPermissions(user.getUsername());
         Set<String> permissionSet = permissionList.stream().map(Menu::getPerms).collect(Collectors.toSet());
         user.setStringPermissions(permissionSet);
     }

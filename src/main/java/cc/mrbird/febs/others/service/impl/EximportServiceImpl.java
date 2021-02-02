@@ -30,7 +30,7 @@ public class EximportServiceImpl extends ServiceImpl<EximportMapper, Eximport> i
     @Override
     public IPage<Eximport> findEximports(QueryRequest request, Eximport eximport) {
         Page<Eximport> page = new Page<>(request.getPageNum(), request.getPageSize());
-        return this.page(page, null);
+        return page(page, null);
     }
 
     @Override

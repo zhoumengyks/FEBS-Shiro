@@ -1,6 +1,7 @@
 package cc.mrbird.febs.monitor.controller;
 
 import cc.mrbird.febs.common.annotation.ControllerEndpoint;
+import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.entity.FebsResponse;
 import cc.mrbird.febs.common.utils.DateUtil;
 import cc.mrbird.febs.monitor.endpoint.FebsHttpTraceEndpoint;
@@ -15,11 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static cc.mrbird.febs.monitor.endpoint.FebsHttpTraceEndpoint.FebsHttpTraceDescriptor;
 
 /**
  * @author MrBird
@@ -28,7 +25,7 @@ import static cc.mrbird.febs.monitor.endpoint.FebsHttpTraceEndpoint.FebsHttpTrac
 @RestController
 @RequestMapping("febs/actuator")
 @RequiredArgsConstructor
-public class FebsActuatorController {
+public class FebsActuatorController extends BaseController {
 
     private final FebsHttpTraceEndpoint httpTraceEndpoint;
 
@@ -36,8 +33,7 @@ public class FebsActuatorController {
     @RequiresPermissions("httptrace:view")
     @ControllerEndpoint(exceptionMessage = "请求追踪失败")
     public FebsResponse httpTraces(String method, String url) {
-        FebsHttpTraceDescriptor traces = httpTraceEndpoint.traces();
-        List<HttpTrace> httpTraceList = traces.getTraces();
+        List<HttpTrace> httpTraceList = httpTraceEndpoint.traces().getTraces();
         List<FebsHttpTrace> febsHttpTraces = new ArrayList<>();
         httpTraceList.forEach(t -> {
             FebsHttpTrace febsHttpTrace = new FebsHttpTrace();
@@ -63,10 +59,7 @@ public class FebsActuatorController {
                 febsHttpTraces.add(febsHttpTrace);
             }
         });
-
-        Map<String, Object> data = new HashMap<>(3);
-        data.put("rows", febsHttpTraces);
-        data.put("total", febsHttpTraces.size());
-        return new FebsResponse().success().data(data);
+        return new FebsResponse().success()
+                .data(getDataTable(febsHttpTraces, febsHttpTraces.size()));
     }
 }

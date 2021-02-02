@@ -36,9 +36,9 @@ public class DesensitizationInterceptor implements Interceptor {
         Object result = invocation.proceed();
         if (result instanceof ArrayList<?>) {
             List<?> list = (ArrayList<?>) result;
-            return this.desensitization(list);
+            return desensitization(list);
         } else {
-            return this.desensitization(result);
+            return desensitization(result);
         }
     }
 

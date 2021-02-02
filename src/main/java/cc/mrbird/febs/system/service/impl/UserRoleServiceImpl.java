@@ -24,18 +24,18 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteUserRolesByRoleId(List<String> roleIds) {
-        this.baseMapper.delete(new QueryWrapper<UserRole>().lambda().in(UserRole::getRoleId, roleIds));
+        baseMapper.delete(new QueryWrapper<UserRole>().lambda().in(UserRole::getRoleId, roleIds));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteUserRolesByUserId(List<String> userIds) {
-        this.baseMapper.delete(new QueryWrapper<UserRole>().lambda().in(UserRole::getUserId, userIds));
+        baseMapper.delete(new QueryWrapper<UserRole>().lambda().in(UserRole::getUserId, userIds));
     }
 
     @Override
     public Set<Long> findUserIdByRoleId(Long roleId) {
-        List<UserRole> userRoles = this.baseMapper.selectList(new QueryWrapper<UserRole>().lambda()
+        List<UserRole> userRoles = baseMapper.selectList(new QueryWrapper<UserRole>().lambda()
                 .eq(UserRole::getRoleId, roleId));
         if (CollectionUtils.isNotEmpty(userRoles)) {
             return userRoles.stream().map(UserRole::getUserId).collect(Collectors.toSet());
@@ -45,7 +45,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
 
     @Override
     public Set<Long> findUserIdByRoleIds(List<String> roleIds) {
-        List<UserRole> userRoles = this.baseMapper.selectList(new QueryWrapper<UserRole>().lambda()
+        List<UserRole> userRoles = baseMapper.selectList(new QueryWrapper<UserRole>().lambda()
                 .in(UserRole::getRoleId, roleIds));
         if (CollectionUtils.isNotEmpty(userRoles)) {
             return userRoles.stream().map(UserRole::getUserId).collect(Collectors.toSet());

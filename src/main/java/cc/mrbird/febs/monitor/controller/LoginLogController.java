@@ -10,6 +10,7 @@ import cc.mrbird.febs.monitor.service.ILoginLogService;
 import com.wuwenze.poi.ExcelKit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author MrBird
@@ -35,16 +34,15 @@ public class LoginLogController extends BaseController {
     @GetMapping("list")
     @RequiresPermissions("loginlog:view")
     public FebsResponse loginLogList(LoginLog loginLog, QueryRequest request) {
-        Map<String, Object> dataTable = getDataTable(this.loginLogService.findLoginLogs(loginLog, request));
-        return new FebsResponse().success().data(dataTable);
+        return new FebsResponse().success()
+                .data(getDataTable(loginLogService.findLoginLogs(loginLog, request)));
     }
 
     @GetMapping("delete/{ids}")
     @RequiresPermissions("loginlog:delete")
     @ControllerEndpoint(exceptionMessage = "删除日志失败")
     public FebsResponse deleteLogs(@NotBlank(message = "{required}") @PathVariable String ids) {
-        String[] loginLogIds = ids.split(Strings.COMMA);
-        this.loginLogService.deleteLoginLogs(loginLogIds);
+        loginLogService.deleteLoginLogs(StringUtils.split(ids, Strings.COMMA));
         return new FebsResponse().success();
     }
 
@@ -52,7 +50,7 @@ public class LoginLogController extends BaseController {
     @RequiresPermissions("loginlog:export")
     @ControllerEndpoint(exceptionMessage = "导出Excel失败")
     public void export(QueryRequest request, LoginLog loginLog, HttpServletResponse response) {
-        List<LoginLog> loginLogs = this.loginLogService.findLoginLogs(loginLog, request).getRecords();
-        ExcelKit.$Export(LoginLog.class, response).downXlsx(loginLogs, false);
+        ExcelKit.$Export(LoginLog.class, response)
+                .downXlsx(loginLogService.findLoginLogs(loginLog, request).getRecords(), false);
     }
 }

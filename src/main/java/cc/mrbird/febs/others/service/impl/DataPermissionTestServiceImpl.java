@@ -24,6 +24,6 @@ public class DataPermissionTestServiceImpl extends ServiceImpl<DataPermissionTes
         LambdaQueryWrapper<DataPermissionTest> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(DataPermissionTest::getCreateTime);
         Page<DataPermissionTest> page = new Page<>(request.getPageNum(), request.getPageSize());
-        return this.page(page, queryWrapper);
+        return page(page, queryWrapper);
     }
 }
