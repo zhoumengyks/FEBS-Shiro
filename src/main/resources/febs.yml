@@ -11,7 +11,7 @@ febs:
     unauthorized-url: /unauthorized
   max-batch-insertNum: 300
   code:
-    time: 120
+    time: PT60s
     type: png
     width: 115
     height: 42

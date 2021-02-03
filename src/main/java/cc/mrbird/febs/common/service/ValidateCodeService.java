@@ -51,10 +51,10 @@ public class ValidateCodeService {
 
         Captcha captcha = createCaptcha(code);
         if (enableRedisCache) {
-            redisService.set(FebsConstant.CODE_PREFIX + key, StringUtils.lowerCase(captcha.text()), code.getTime());
+            redisService.set(FebsConstant.VALIDATE_CODE_PREFIX + key, StringUtils.lowerCase(captcha.text()), code.getTime().getSeconds());
         } else {
             session.setAttribute(FebsConstant.VALIDATE_CODE_PREFIX + key, StringUtils.lowerCase(captcha.text()));
-            LocalDateTime expireTime = LocalDateTime.now().plusSeconds(code.getTime());
+            LocalDateTime expireTime = LocalDateTime.now().plusSeconds(code.getTime().getSeconds());
             session.setAttribute(FebsConstant.VALIDATE_CODE_TIME_PREFIX + key, expireTime);
         }
         captcha.out(response.getOutputStream());
@@ -65,7 +65,7 @@ public class ValidateCodeService {
             throw new FebsException("请输入验证码");
         }
         if (enableRedisCache) {
-            Object codeInRedis = redisService.get(FebsConstant.CODE_PREFIX + key);
+            Object codeInRedis = redisService.get(FebsConstant.VALIDATE_CODE_PREFIX + key);
             if (codeInRedis == null) {
                 throw new FebsException("验证码已过期");
             }

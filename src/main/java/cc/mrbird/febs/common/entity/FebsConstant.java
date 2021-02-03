@@ -28,11 +28,6 @@ public interface FebsConstant {
     String VIEW_PREFIX = "febs/views/";
 
     /**
-     * 验证码 Session Key
-     */
-    String CODE_PREFIX = "febs_captcha_";
-
-    /**
      * 允许下载的文件类型，根据需求自己添加（小写）
      */
     String[] VALID_FILE_TYPE = {"xlsx", "zip"};
@@ -68,12 +63,12 @@ public interface FebsConstant {
     String DAY_END_PATTERN_SUFFIX = " 23:59:59";
 
     /**
-     * 验证码Session Key前缀
+     * 验证码ey前缀
      */
     String VALIDATE_CODE_PREFIX = "febs_captcha_";
 
     /**
-     * 验证码Session有效期Key前缀
+     * 验证码有效期Key前缀
      */
     String VALIDATE_CODE_TIME_PREFIX = "febs_captcha_time_";
 }
