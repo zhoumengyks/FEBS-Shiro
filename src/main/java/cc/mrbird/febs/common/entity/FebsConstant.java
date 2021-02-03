@@ -33,19 +33,14 @@ public interface FebsConstant {
     String[] VALID_FILE_TYPE = {"xlsx", "zip"};
 
     /**
-     * 异步线程池名称
+     * febs-shiro线程池名称
      */
-    String ASYNC_POOL = "febsAsyncThreadPool";
+    String FEBS_SHIRO_THREAD_POOL = "febsShiroThreadPool";
 
     /**
-     * 异步线程名称前缀
+     * febs-shiro线程名称前缀
      */
-    String ASYNC_THREAD_NAME_PREFIX = "febs-async-thread-";
-
-    /**
-     * 任务调度线程前缀
-     */
-    String QUARTZ_THREAD_NAME_PREFIX = "febs-job-thread-";
+    String FEBS_SHIRO_THREAD_NAME_PREFIX = "febs-shiro-thread-";
 
     /**
      * 开发环境

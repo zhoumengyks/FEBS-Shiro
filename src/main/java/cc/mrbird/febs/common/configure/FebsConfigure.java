@@ -32,14 +32,14 @@ public class FebsConfigure {
 
     private final FebsProperties properties;
 
-    @Bean(FebsConstant.ASYNC_POOL)
-    public ThreadPoolTaskExecutor asyncThreadPoolTaskExecutor() {
+    @Bean(FebsConstant.FEBS_SHIRO_THREAD_POOL)
+    public ThreadPoolTaskExecutor FebsShiroThreadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);
         executor.setMaxPoolSize(20);
         executor.setQueueCapacity(200);
         executor.setKeepAliveSeconds(30);
-        executor.setThreadNamePrefix(FebsConstant.ASYNC_THREAD_NAME_PREFIX);
+        executor.setThreadNamePrefix(FebsConstant.FEBS_SHIRO_THREAD_NAME_PREFIX);
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setAwaitTerminationSeconds(60);
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());

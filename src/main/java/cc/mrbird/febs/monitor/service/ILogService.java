@@ -43,6 +43,6 @@ public interface ILogService extends IService<SystemLog> {
      * @param operation 操作内容
      * @param start     开始时间
      */
-    @Async(FebsConstant.ASYNC_POOL)
+    @Async(FebsConstant.FEBS_SHIRO_THREAD_POOL)
     void saveLog(User user, ProceedingJoinPoint point, Method method, String ip, String operation, long start);
 }
