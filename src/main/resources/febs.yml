@@ -1,6 +1,5 @@
 # cc.mrbird.febs.common.properties.FebsProperties
 febs:
-  auto-open-browser: true
   enable-redis-cache: false
   shiro:
     session-timeout: PT86400s

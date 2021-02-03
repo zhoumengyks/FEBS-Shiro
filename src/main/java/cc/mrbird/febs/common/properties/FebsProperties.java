@@ -16,7 +16,6 @@ public class FebsProperties {
     public static final String ENABLE_REDIS_CACHE = "febs.enable-redis-cache";
 
     private ShiroProperties shiro = new ShiroProperties();
-    private boolean autoOpenBrowser = true;
     private SwaggerProperties swagger = new SwaggerProperties();
     /**
      * 批量插入提交commit数据量
