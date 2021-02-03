@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
-import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
@@ -29,10 +28,6 @@ import java.util.stream.Collectors;
 @Configuration(proxyBeanMethods = false)
 public class ShiroEarlyBeanRegistrar {
 
-    @Resource
-    @Lazy
-    private FebsProperties febsProperties;
-
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(@Lazy DefaultWebSecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
@@ -41,7 +36,8 @@ public class ShiroEarlyBeanRegistrar {
     }
 
     @Bean
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Lazy DefaultWebSecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Lazy DefaultWebSecurityManager securityManager,
+                                                         @Lazy FebsProperties febsProperties) {
         ShiroProperties shiro = febsProperties.getShiro();
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         // 设置 securityManager
