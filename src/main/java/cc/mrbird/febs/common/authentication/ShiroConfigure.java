@@ -7,7 +7,7 @@ import cc.mrbird.febs.common.properties.FebsProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -63,7 +63,7 @@ public class ShiroConfigure {
 
     @Bean
     @ConditionOnRedisCache
-    public RedisCacheManager cacheManager() {
+    public RedisCacheManager redisCacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         // 权限缓存超时时间，和session超时时间一致
         redisCacheManager.setExpire((int) febsProperties.getShiro().getSessionTimeout().getSeconds());
@@ -72,17 +72,25 @@ public class ShiroConfigure {
     }
 
     @Bean
-    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm, @Nullable CacheManager cacheManager,
+    @ConditionalOnMissingBean(RedisCacheManager.class)
+    public EhCacheManager ehCacheManager() {
+        EhCacheManager ehCacheManager = new EhCacheManager();
+        ehCacheManager.setCacheManagerConfigFile("classpath:shiro-ehcache.xml");
+        return ehCacheManager;
+    }
+
+    @Bean
+    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm,
+                                                     @Nullable RedisCacheManager redisCacheManager,
+                                                     @Nullable EhCacheManager ehCacheManager,
                                                      DefaultWebSessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 配置 SecurityManager，并注入 shiroRealm
         securityManager.setRealm(shiroRealm);
         // 配置 shiro session管理器
         securityManager.setSessionManager(sessionManager);
-        if (cacheManager != null) {
-            // 配置 缓存管理类 cacheManager
-            securityManager.setCacheManager(cacheManager);
-        }
+        // 配置 缓存管理类 cacheManager
+        securityManager.setCacheManager(redisCacheManager != null ? redisCacheManager : ehCacheManager);
         // 配置 rememberMeCookie
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;

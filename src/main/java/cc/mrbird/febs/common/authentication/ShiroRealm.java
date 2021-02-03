@@ -12,10 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.crazycake.shiro.RedisCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -37,13 +38,20 @@ public class ShiroRealm extends AuthorizingRealm {
     private final ShiroLogoutService shiroLogoutService;
     private final IUserDataPermissionService userDataPermissionService;
     private final IUserService userService;
-    private CacheManager cm;
+
+    private RedisCacheManager redisCacheManager;
+    private EhCacheManager ehCacheManager;
     @Value("${" + FebsProperties.ENABLE_REDIS_CACHE + "}")
     private boolean enableRedisCache;
 
     @Autowired(required = false)
-    public void setCm(CacheManager cm) {
-        this.cm = cm;
+    public void setRedisCacheManager(RedisCacheManager redisCacheManager) {
+        this.redisCacheManager = redisCacheManager;
+    }
+
+    @Autowired(required = false)
+    public void setEhCacheManager(EhCacheManager ehCacheManager) {
+        this.ehCacheManager = ehCacheManager;
     }
 
     @PostConstruct
@@ -51,9 +59,7 @@ public class ShiroRealm extends AuthorizingRealm {
         setAuthenticationCachingEnabled(true);
         setAuthorizationCachingEnabled(true);
         setCachingEnabled(true);
-        if (cm != null) {
-            setCacheManager(cm);
-        }
+        setCacheManager(redisCacheManager == null ? ehCacheManager : redisCacheManager);
     }
 
     /**
@@ -64,7 +70,6 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
-        System.err.println("doGetAuthorizationInfo");
         User user = (User) principal.getPrimaryPrincipal();
         userService.doGetUserAuthorizationInfo(user);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
@@ -82,7 +87,6 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        System.err.println("doGetAuthenticationInfo");
         // 获取用户输入的用户名和密码
         String username = (String) token.getPrincipal();
         String password = new String((char[]) token.getCredentials());
