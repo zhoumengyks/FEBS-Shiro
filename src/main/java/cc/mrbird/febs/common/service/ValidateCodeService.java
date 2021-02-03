@@ -5,11 +5,14 @@ import cc.mrbird.febs.common.entity.ImageType;
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.properties.FebsProperties;
 import cc.mrbird.febs.common.properties.ValidateCodeProperties;
+import cc.mrbird.febs.common.utils.HttpContextUtil;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.base.Captcha;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -18,9 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
- * 验证码服务
+ * 验证码服务，
+ * 如果febs.enable-redis-cache=true，则存redis，否则存session
  *
  * @author MrBird
  */
@@ -28,8 +33,15 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ValidateCodeService {
 
-    private final RedisService redisService;
     private final FebsProperties properties;
+    private RedisService redisService;
+    @Value("${" + FebsProperties.ENABLE_REDIS_CACHE + "}")
+    private boolean enableRedisCache;
+
+    @Autowired(required = false)
+    public void setRedisService(RedisService redisService) {
+        this.redisService = redisService;
+    }
 
     public void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -38,21 +50,46 @@ public class ValidateCodeService {
         setHeader(response, code.getType());
 
         Captcha captcha = createCaptcha(code);
-        redisService.set(FebsConstant.CODE_PREFIX + key, StringUtils.lowerCase(captcha.text()), code.getTime());
+        if (enableRedisCache) {
+            redisService.set(FebsConstant.CODE_PREFIX + key, StringUtils.lowerCase(captcha.text()), code.getTime());
+        } else {
+            session.setAttribute(FebsConstant.VALIDATE_CODE_PREFIX + key, StringUtils.lowerCase(captcha.text()));
+            LocalDateTime expireTime = LocalDateTime.now().plusSeconds(code.getTime());
+            session.setAttribute(FebsConstant.VALIDATE_CODE_TIME_PREFIX + key, expireTime);
+        }
         captcha.out(response.getOutputStream());
     }
 
-
     public void check(String key, String value) throws FebsException {
-        Object codeInRedis = redisService.get(FebsConstant.CODE_PREFIX + key);
         if (StringUtils.isBlank(value)) {
             throw new FebsException("请输入验证码");
         }
-        if (codeInRedis == null) {
-            throw new FebsException("验证码已过期");
-        }
-        if (!StringUtils.equalsIgnoreCase(value, String.valueOf(codeInRedis))) {
-            throw new FebsException("验证码不正确");
+        if (enableRedisCache) {
+            Object codeInRedis = redisService.get(FebsConstant.CODE_PREFIX + key);
+            if (codeInRedis == null) {
+                throw new FebsException("验证码已过期");
+            }
+            if (!StringUtils.equalsIgnoreCase(value, String.valueOf(codeInRedis))) {
+                throw new FebsException("验证码不正确");
+            }
+        } else {
+            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+            HttpSession session = request.getSession();
+            String validateCodeSessionKey = FebsConstant.VALIDATE_CODE_PREFIX + key;
+            String validateCodeTimeSessionKey = FebsConstant.VALIDATE_CODE_TIME_PREFIX + key;
+            Object codeInSession = session.getAttribute(validateCodeSessionKey);
+            LocalDateTime timeInSession = (LocalDateTime) session.getAttribute(validateCodeTimeSessionKey);
+            try {
+                if (LocalDateTime.now().isAfter(timeInSession)) {
+                    throw new FebsException("验证码已过期");
+                }
+                if (!StringUtils.equalsIgnoreCase(value, String.valueOf(codeInSession))) {
+                    throw new FebsException("验证码不正确");
+                }
+            } finally {
+                session.removeAttribute(validateCodeSessionKey);
+                session.removeAttribute(validateCodeTimeSessionKey);
+            }
         }
     }
 

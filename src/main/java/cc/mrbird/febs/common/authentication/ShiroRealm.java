@@ -1,5 +1,6 @@
 package cc.mrbird.febs.common.authentication;
 
+import cc.mrbird.febs.common.properties.FebsProperties;
 import cc.mrbird.febs.monitor.service.ISessionService;
 import cc.mrbird.febs.system.entity.User;
 import cc.mrbird.febs.system.service.IUserDataPermissionService;
@@ -15,6 +16,8 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -30,18 +33,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShiroRealm extends AuthorizingRealm {
 
-    private final CacheManager cacheManager;
     private final ISessionService sessionService;
     private final ShiroLogoutService shiroLogoutService;
     private final IUserDataPermissionService userDataPermissionService;
     private final IUserService userService;
+    private CacheManager cm;
+    @Value("${" + FebsProperties.ENABLE_REDIS_CACHE + "}")
+    private boolean enableRedisCache;
+
+    @Autowired(required = false)
+    public void setCm(CacheManager cm) {
+        this.cm = cm;
+    }
 
     @PostConstruct
     private void initConfig() {
         setAuthenticationCachingEnabled(true);
         setAuthorizationCachingEnabled(true);
         setCachingEnabled(true);
-        setCacheManager(cacheManager);
+        if (cm != null) {
+            setCacheManager(cm);
+        }
     }
 
     /**
@@ -52,6 +64,7 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
+        System.err.println("doGetAuthorizationInfo");
         User user = (User) principal.getPrimaryPrincipal();
         userService.doGetUserAuthorizationInfo(user);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
@@ -69,6 +82,7 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        System.err.println("doGetAuthenticationInfo");
         // 获取用户输入的用户名和密码
         String username = (String) token.getPrincipal();
         String password = new String((char[]) token.getCredentials());
@@ -90,7 +104,9 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     public void onLogout(PrincipalCollection principals) {
         super.onLogout(principals);
-        shiroLogoutService.cleanCacheFragment(principals);
+        if (enableRedisCache) {
+            shiroLogoutService.cleanCacheFragment(principals);
+        }
     }
 
     public void clearCache(Long userId) {

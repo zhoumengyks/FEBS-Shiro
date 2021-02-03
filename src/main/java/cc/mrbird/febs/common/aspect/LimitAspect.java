@@ -1,5 +1,6 @@
 package cc.mrbird.febs.common.aspect;
 
+import cc.mrbird.febs.common.annotation.ConditionOnRedisCache;
 import cc.mrbird.febs.common.annotation.Limit;
 import cc.mrbird.febs.common.entity.LimitType;
 import cc.mrbird.febs.common.entity.Strings;
@@ -24,13 +25,14 @@ import java.lang.reflect.Method;
 
 
 /**
- * 接口限流
+ * 基于Redis的接口限流，如果未开启Redis，则该功能不生效
  *
  * @author MrBird
  */
 @Slf4j
 @Aspect
 @Component
+@ConditionOnRedisCache
 @RequiredArgsConstructor
 public class LimitAspect extends BaseAspectSupport {
 

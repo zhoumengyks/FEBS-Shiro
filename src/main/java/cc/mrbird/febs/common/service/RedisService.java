@@ -1,5 +1,6 @@
 package cc.mrbird.febs.common.service;
 
+import cc.mrbird.febs.common.annotation.ConditionOnRedisCache;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @author MrBird
  */
 @Service
+@ConditionOnRedisCache
 @RequiredArgsConstructor
 @SuppressWarnings("all")
 public class RedisService {
