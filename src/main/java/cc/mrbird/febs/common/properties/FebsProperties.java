@@ -24,7 +24,8 @@ public class FebsProperties {
 
     private ValidateCodeProperties code = new ValidateCodeProperties();
     /**
-     * 是否开启Redis缓存
+     * 是否开启Redis缓存，true开启，false关闭
+     * 为false时，采用基于内存的ehcache缓存
      */
     private boolean enableRedisCache;
 }
