@@ -2,9 +2,9 @@
 
 ### FEBS-Shiro 2.0
 ![https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square](https://img.shields.io/badge/license-Apache%202.0-blue.svg?longCache=true&style=flat-square)
-![https://img.shields.io/badge/springboot-2.4.2-yellow.svg?style=flat-square](https://img.shields.io/badge/springboot-2.4.2-yellow.svg?style=flat-square)
+![https://img.shields.io/badge/springboot-2.5.3-yellow.svg?style=flat-square](https://img.shields.io/badge/springboot-2.5.3-yellow.svg?style=flat-square)
 ![https://img.shields.io/badge/shiro-1.6.0-orange.svg?longCache=true&style=flat-square](https://img.shields.io/badge/shiro-1.6.0-orange.svg?longCache=true&style=flat-square)
-![https://img.shields.io/badge/layui-2.5.7-brightgreen.svg?longCache=true&style=flat-square](https://img.shields.io/badge/layui-2.5.7-brightgreen.svg?longCache=true&style=flat-square)
+![https://img.shields.io/badge/layui-2.6.8-brightgreen.svg?longCache=true&style=flat-square](https://img.shields.io/badge/layui-2.6.8-brightgreen.svg?longCache=true&style=flat-square)
 
 FEBS-Shiro是一款简单高效的后台权限管理系统，使用Spring Boot，Shiro和Layui构建。FEBS意指：**F**ast，**E**asy use，**B**eautiful和**S**afe。相信无论作为企业级应用，私活开发脚手架或者权限系统构建学习，FEBS-Shiro都会是一个不错的选择。
 
@@ -90,7 +90,7 @@ FEBS-Cloud | 基于Spring Cloud的微服务权限系统 | [https://github.com/wu
 ### 技术选型
 
 #### 后端
-- [Spring Boot 2.4.2](http://spring.io/projects/spring-boot/)
+- [Spring Boot 2.5.3](http://spring.io/projects/spring-boot/)
 - [Mybatis-Plus](https://mp.baomidou.com/guide/)
 - [MySQL 5.7.x](https://dev.mysql.com/downloads/mysql/5.7.html#downloads)
 - [Hikari](https://brettwooldridge.github.io/HikariCP/)
@@ -98,7 +98,7 @@ FEBS-Cloud | 基于Spring Cloud的微服务权限系统 | [https://github.com/wu
 - [Shiro 1.6.0](http://shiro.apache.org/)
 
 #### 前端
-- [Layui 2.5.7](https://www.layui.com/)
+- [Layui 2.6.8](https://www.layui.com/)
 - [Nepadmin](https://gitee.com/june000/nep-admin)
 - [eleTree 树组件](https://layuiextend.hsianglee.cn/eletree/)
 - [xm-select](https://gitee.com/maplemei/xm-select)
