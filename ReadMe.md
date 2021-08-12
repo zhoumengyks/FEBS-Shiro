@@ -1,3 +1,8 @@
+### 特别赞助
+
+<a href="https://www.jetbrains.com/?from=FEBS Shiro">
+    <img src="screenshot/jetbrains.png" width="100px"></a>
+
 ### 编辑器记得安装lombok插件
 
 ### FEBS-Shiro 2.0
@@ -164,9 +169,4 @@ FEBS-Cloud | 基于Spring Cloud的微服务权限系统 | [https://github.com/wu
 加入QQ群和大家一起~~交流~~吹水：
 
 ![qq](screenshot/QQ.jpg)
-
-### 特别赞助
-
-<a href="https://www.jetbrains.com/?from=FEBS Shiro">
-    <img src="screenshot/jetbrains.png" width="100px"></a>
 
