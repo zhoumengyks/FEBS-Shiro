@@ -113,13 +113,13 @@
     <a lay-event="del" shiro:hasPermission="user:delete"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
 <script data-th-inline="none" type="text/javascript">
-    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'xmSelect'], function () {
+    layui.use(['dropdownMenu', 'jquery', 'laydate', 'form', 'table', 'febs', 'xmSelect'], function () {
         let $ = layui.jquery,
             laydate = layui.laydate,
             febs = layui.febs,
             form = layui.form,
             table = layui.table,
-            dropdown = layui.dropdown,
+            dropdownMenu = layui.dropdownMenu,
             $view = $('#febs-user'),
             $query = $view.find('#query'),
             $reset = $view.find('#reset'),
@@ -140,7 +140,7 @@
             trigger: 'click'
         });
 
-        dropdown.render({
+        dropdownMenu.render({
             elem: $view.find('.action-more'),
             click: function (name, elem, event) {
                 let checkStatus = table.checkStatus('userTable');

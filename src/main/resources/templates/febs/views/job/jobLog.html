@@ -86,13 +86,13 @@
             class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
 </script>
 <script data-th-inline="none" type="text/javascript">
-    layui.use(['dropdown', 'jquery', 'form', 'table', 'febs'], function () {
+    layui.use(['dropdownMenu', 'jquery', 'form', 'table', 'febs'], function () {
         let $ = layui.jquery,
             laydate = layui.laydate,
             febs = layui.febs,
             form = layui.form,
             table = layui.table,
-            dropdown = layui.dropdown,
+            dropdownMenu = layui.dropdownMenu,
             $view = $('#febs-job-log'),
             $query = $view.find('#query'),
             $reset = $view.find('#reset'),
@@ -103,7 +103,7 @@
         form.render();
         initTable();
 
-        dropdown.render({
+        dropdownMenu.render({
             elem: $view.find('.action-more'),
             click: function (name, elem, event) {
                 let checkStatus = table.checkStatus('jobLogTable');

@@ -112,14 +112,14 @@
     </div>
 </div>
 <script data-th-inline="none" type="text/javascript">
-    layui.use(['dropdown', 'jquery', 'febs', 'form', 'eleTree', 'validate', 'xmSelect'], function () {
+    layui.use(['dropdownMenu', 'jquery', 'febs', 'form', 'eleTree', 'validate', 'xmSelect'], function () {
         let $ = layui.jquery,
             febs = layui.febs,
             form = layui.form,
             validate = layui.validate,
             eleTree = layui.eleTree,
             xmSelect = layui.xmSelect,
-            dropdown = layui.dropdown,
+            dropdownMenu = layui.dropdownMenu,
             $view = $('#febs-menu'),
             $query = $view.find('#query'),
             $reset = $view.find('#reset'),
@@ -172,7 +172,7 @@
             menuXmlSelect.update(data)
         });
 
-        dropdown.render({
+        dropdownMenu.render({
             elem: $view.find('.action-more'),
             click: function (name, elem, event) {
                 if (name === 'add') {
